@@ -2,7 +2,8 @@ import { useEffect } from "react";
 import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
 
 import Home from "./routes/Home";
-import Game from "./routes/Game";
+import GamePage from "./routes/GamePage";
+import ErrorPage from "./routes/ErrorPage";
 
 import "./App.css";
 
@@ -21,8 +22,9 @@ function App() {
     return (
         <Routes>
             <Route path="/" element={<Home onStartGame={startGame} />} />
-            <Route path="/start" element={<Game />} />
+            <Route path="/start" element={<GamePage />} />
             <Route path="*" element={<Navigate to="/" />} />
+            <Route path="/404" element={<ErrorPage />} />
         </Routes>
     );
 }

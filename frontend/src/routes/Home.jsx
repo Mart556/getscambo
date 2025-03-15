@@ -1,7 +1,29 @@
+import { useState, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlay } from "@fortawesome/free-solid-svg-icons";
 
-function Home({ onStartGame }) {
+const Home = ({ onStartGame }) => {
+    const [userName, setUserName] = useState(
+        localStorage.getItem("username") || ""
+    );
+
+    useEffect(() => {
+        localStorage.setItem("username", userName);
+    }, [userName]);
+
+    const handleStartGame = () => {
+        console.log("Starting the game with username:", userName);
+        if (userName.length > 3) {
+            localStorage.setItem("username", userName);
+            onStartGame();
+            return;
+        } else {
+            alert(
+                "Sisesta kasutajnimi ja proovi uuesti! \nKasutajanimi peab olema vähemalt 4 tähemärki pikk."
+            );
+        }
+    };
+
     return (
         <div className="container mx-auto px-4 md:px-8 h-screen flex flex-col">
             <div className="flex flex-col justify-center pt-4">
@@ -22,9 +44,11 @@ function Home({ onStartGame }) {
                         type="text"
                         className="border-2 border-gray-600 p-2 rounded-lg text-center w-full bg-gray-800 text-white"
                         placeholder="Sisesta Kasutajanimi"
+                        value={userName}
+                        onChange={(event) => setUserName(event.target.value)}
                     />
                     <button
-                        onClick={onStartGame}
+                        onClick={handleStartGame}
                         className="bg-green-500 p-4 md:p-8 py-3 md:py-4 rounded-lg mt-2 w-full cursor-pointer"
                     >
                         <span className="text-xl md:text-2xl font-bold text-white flex items-center justify-center">
@@ -49,6 +73,6 @@ function Home({ onStartGame }) {
             </div>
         </div>
     );
-}
+};
 
 export default Home;
