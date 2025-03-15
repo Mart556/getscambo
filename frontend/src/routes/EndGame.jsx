@@ -3,15 +3,46 @@ import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRepeat, faHome } from "@fortawesome/free-solid-svg-icons";
 
-const EndGame = ({ isNewHighScore, currentPoints }) => {
-    const saveResult = () => {
-        // TODO: Implement saving the result to the backend
-        console.log(
-            "Saving the result to the backend server...",
-            currentPoints,
-            localStorage.getItem("username")
-        );
-    };
+const EndReasons = {
+    ["time"]: "Aeg sai otsa!",
+    ["answer"]: "Vastasid valesti!",
+};
+
+const EndGame = ({ isNewHighScore, endReason }) => {
+    const endReasonText = EndReasons[endReason] || "Mäng läbi!";
+
+    useEffect(() => {
+        fetchRandomMeme();
+
+        const saveResult = () => {
+            fetch("/api/submit-score", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    username: localStorage.getItem("username"),
+                    score: localStorage.getItem("highestPoints"),
+                }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    console.log("Result saved:", data);
+
+                    localStorage.setItem(
+                        "lastHighScore",
+                        localStorage.getItem("highestPoints") || 0
+                    );
+                })
+                .catch((error) => {
+                    console.error("Error saving result:", error);
+                });
+        };
+
+        return () => {
+            if (isNewHighScore) saveResult();
+        };
+    }, []);
 
     const [meme, setMeme] = useState("null");
 
@@ -29,18 +60,12 @@ const EndGame = ({ isNewHighScore, currentPoints }) => {
         }
     };
 
-    useEffect(() => {
-        fetchRandomMeme();
-
-        return () => {
-            if (isNewHighScore) saveResult();
-        };
-    }, []);
-
     return (
         <div className="flex flex-col items-center justify-center h-full bg-gray-800 rounded-lg shadow-lg p-4 my-4">
             <div className="flex flex-col justify-center items-center w-full">
-                <h1 className="text-7xl font-bold text-white">Mäng läbi!</h1>
+                <h1 className="text-7xl font-bold text-white">
+                    {endReasonText}
+                </h1>
 
                 <img
                     src={meme.url}

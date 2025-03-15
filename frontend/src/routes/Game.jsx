@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, memo } from "react";
 
-const Game = ({ onGameRunningChange, incrementCurrentPoints }) => {
+const Game = memo(({ onGameRunningChange, incrementCurrentPoints }) => {
     const [currentImage, setImage] = useState("pzu1.webp");
 
     const getImagePath = (imageName) => {
@@ -34,8 +34,6 @@ const Game = ({ onGameRunningChange, incrementCurrentPoints }) => {
                 }
 
                 setImage(data.nextImage);
-
-                console.log("Server response:", data);
             })
             .catch((error) => {
                 console.error("Error:", error);
@@ -44,7 +42,7 @@ const Game = ({ onGameRunningChange, incrementCurrentPoints }) => {
     };
 
     const endGame = () => {
-        onGameRunningChange(false);
+        onGameRunningChange(false, "answer");
     };
 
     return (
@@ -74,6 +72,6 @@ const Game = ({ onGameRunningChange, incrementCurrentPoints }) => {
             </div>
         </div>
     );
-};
+});
 
 export default Game;

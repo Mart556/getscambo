@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Game from "./Game";
 import EndGame from "./EndGame";
 
@@ -7,17 +7,19 @@ import { faStopwatch } from "@fortawesome/free-solid-svg-icons";
 
 const GamePage = () => {
     const [isGameRunning, setGameRunning] = useState(true);
+    const [gameEndReason, setGameEndReason] = useState("");
 
-    const handleGameRunningChange = (isRunning) => {
+    const handleGameRunningChange = useCallback((isRunning, reason = "") => {
         setGameRunning(isRunning);
+        setGameEndReason(reason);
         clearInterval(intervalRef.current);
-    };
+    }, []);
 
     const [currentPoints, setPoints] = useState(0);
 
-    const handlePointsChange = () => {
-        setPoints(currentPoints + 1);
-    };
+    const handlePointsChange = useCallback(() => {
+        setPoints((prevPoints) => prevPoints + 1);
+    }, []);
 
     const [highestPoints, setHighestPoints] = useState(
         localStorage.getItem("highestPoints") || 0
@@ -25,15 +27,10 @@ const GamePage = () => {
 
     useEffect(() => {
         if (currentPoints > highestPoints) {
-            console.log("Setting highest points:", currentPoints);
             setHighestPoints(currentPoints);
+            localStorage.setItem("highestPoints", currentPoints);
         }
-
-        return () => {
-            console.log("Save highest points to local storage:", highestPoints);
-            localStorage.setItem("highestPoints", highestPoints);
-        };
-    }, [highestPoints, currentPoints]);
+    }, [currentPoints, highestPoints]);
 
     const [timeLeft, setTime] = useState(0);
 
@@ -49,7 +46,7 @@ const GamePage = () => {
             setTime(timeLeft > 0 ? timeLeft : 0);
 
             if (timeLeft <= 0) {
-                handleGameRunningChange(false);
+                handleGameRunningChange(false, "time");
             }
         };
 
@@ -60,48 +57,53 @@ const GamePage = () => {
     }, []);
 
     return (
-        <div className="container mx-auto px-4 md:px-8 h-screen flex flex-col bg-gray-900 max-h-screen">
-            <div className="bg-gray-800 p-4 rounded-lg shadow-lg mt-4 flex flex-row justify-between">
-                <div className="flex justify-start items-center">
-                    <p className="text-2xl font-bold text-white me-3">
-                        Punkte: {currentPoints}
-                    </p>
+        <>
+            <div className="container mx-auto px-4 md:px-8 h-screen flex flex-col bg-gray-900 max-h-screen">
+                <div className="bg-gray-800 p-4 rounded-lg shadow-lg mt-4 flex flex-row justify-between">
+                    <div className="flex justify-start items-center">
+                        <p className="text-2xl font-bold text-white me-3">
+                            Punkte: {currentPoints}
+                        </p>
 
-                    <p className="text-2xl font-bold text-white">
-                        Rekord: {highestPoints}
-                    </p>
-                </div>
+                        <p className="text-2xl font-bold text-white">
+                            Rekord: {highestPoints}
+                        </p>
+                    </div>
 
-                <div className="flex justify-self-end items-center w-1/4">
-                    <FontAwesomeIcon
-                        icon={faStopwatch}
-                        size="xl"
-                        className="text-white me-3"
-                    />{" "}
-                    <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
-                        <div
-                            className="bg-green-500 h-full"
-                            style={{
-                                width: `${(timeLeft / 60000) * 100}%`,
-                                transition: "width 0.5s linear",
-                            }}
-                        ></div>
+                    <div className="flex justify-self-end items-center w-1/4">
+                        <FontAwesomeIcon
+                            icon={faStopwatch}
+                            size="xl"
+                            className="text-white me-3"
+                        />{" "}
+                        <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
+                            <div
+                                className="bg-green-500 h-full"
+                                style={{
+                                    width: `${(timeLeft / 60000) * 100}%`,
+                                    transition: "width 0.5s linear",
+                                }}
+                            ></div>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            {isGameRunning ? (
-                <Game
-                    onGameRunningChange={handleGameRunningChange}
-                    incrementCurrentPoints={handlePointsChange}
-                />
-            ) : (
-                <EndGame
-                    isNewHighScore={currentPoints > highestPoints}
-                    currentPoints={currentPoints}
-                />
-            )}
-        </div>
+                {isGameRunning ? (
+                    <Game
+                        onGameRunningChange={handleGameRunningChange}
+                        incrementCurrentPoints={handlePointsChange}
+                    />
+                ) : (
+                    <EndGame
+                        isNewHighScore={
+                            currentPoints >
+                            localStorage.getItem("lastHighScore")
+                        }
+                        endReason={gameEndReason}
+                    />
+                )}
+            </div>
+        </>
     );
 };
 

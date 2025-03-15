@@ -50,4 +50,35 @@ router.post("/validate-answer", (req, res) => {
     res.json(response);
 });
 
+router.get("/get-highscores", (req, res) => {
+    connection.query(
+        "SELECT username, score FROM leaderboard ORDER BY score DESC LIMIT 10",
+        (error, results) => {
+            if (error) {
+                console.error("Error fetching highscores:", error);
+                return res.status(500).json({ error: "Database error" });
+            }
+
+            res.json(results);
+        }
+    );
+});
+
+router.post("/submit-score", (req, res) => {
+    const { username, score } = req.body;
+
+    connection.query(
+        "INSERT INTO leaderboard (username, score) VALUES (?, ?)",
+        [username, score],
+        (error, results) => {
+            if (error) {
+                console.error("Error submitting score:", error);
+                return res.status(500).json({ error: "Database error" });
+            }
+
+            res.json({ success: true });
+        }
+    );
+});
+
 export default router;

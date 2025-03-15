@@ -11,6 +11,29 @@ const Home = ({ onStartGame }) => {
         localStorage.setItem("username", userName);
     }, [userName]);
 
+    const [leaderboardUsers, setLeaderboardUsers] = useState([]);
+
+    localStorage.setItem(
+        "lastHighScore",
+        localStorage.getItem("highestPoints") || 0
+    );
+
+    useEffect(() => {
+        fetch("/api/get-highscores")
+            .then((response) => response.json())
+            .then((data) => {
+                console.log("Highscores fetched:", data);
+                const leaderboardUsers = data.map((user) => ({
+                    username: user.username,
+                    score: user.score,
+                }));
+                setLeaderboardUsers(leaderboardUsers);
+            })
+            .catch((error) => {
+                console.error("Error fetching highscores:", error);
+            });
+    }, []);
+
     const handleStartGame = () => {
         console.log("Starting the game with username:", userName);
         if (userName.length > 3) {
@@ -67,7 +90,17 @@ const Home = ({ onStartGame }) => {
                     </h2>
                     <hr className="border-gray-600 mt-1" />
                     <div className="flex flex-col mt-2">
-                        {/* Scoreboard content will go here */}
+                        {leaderboardUsers.map((user, index) => (
+                            <div
+                                key={index}
+                                className="flex justify-between items-center py-2 border-b border-gray-600 font-bold"
+                            >
+                                <span className="text-white">
+                                    {index + 1}. {user.username}
+                                </span>
+                                <span className="text-white">{user.score}</span>
+                            </div>
+                        ))}
                     </div>
                 </div>
             </div>
