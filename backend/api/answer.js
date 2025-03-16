@@ -81,4 +81,15 @@ router.post("/submit-score", async (req, res) => {
     }
 });
 
+// cron job to reset leaderboard every day at midnight
+import cron from "node-cron";
+cron.schedule("0 0 * * *", async () => {
+    try {
+        await pool.query("DELETE FROM `leaderboard`");
+        console.log("Leaderboard reset");
+    } catch (error) {
+        console.error("Error resetting leaderboard:", error);
+    }
+});
+
 export default router;

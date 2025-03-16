@@ -16,6 +16,9 @@ app.use(express.json());
 import answerRouter from "./api/answer.js";
 app.use("/api", answerRouter);
 
+import cronJobs from "./utils/cron_jobs.js";
+cronJobs();
+
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, "..", "frontend", "dist")));
 
