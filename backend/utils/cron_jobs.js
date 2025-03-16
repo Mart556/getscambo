@@ -1,5 +1,5 @@
 import cron from "node-cron";
-import pool from "..utils/db.js";
+import pool from "./db.js";
 
 const initCronJobs = () => {
     cron.schedule("0 0 * * *", async () => {
