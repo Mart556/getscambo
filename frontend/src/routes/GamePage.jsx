@@ -58,19 +58,19 @@ const GamePage = () => {
 
     return (
         <>
-            <div className="container mx-auto px-4 md:px-8 h-screen flex flex-col bg-gray-900 max-h-screen">
-                <div className="bg-gray-800 p-4 rounded-lg shadow-lg mt-4 flex flex-row justify-between">
+            <div className="container mx-auto px-4 md:px-8 h-screen flex flex-col max-h-screen">
+                <div className="bg-neutral-800/75  backdrop-filter backdrop-blur-lg  p-4 rounded-lg shadow-lg mt-4 flex flex-row justify-between">
                     <div className="flex justify-start items-center">
-                        <p className="text-2xl font-bold text-white me-3">
+                        <p className="text-xl md:text-2xl font-bold text-white me-3">
                             Punkte: {currentPoints}
                         </p>
 
-                        <p className="text-2xl font-bold text-white">
+                        <p className="text-xl md:text-2xl font-bold text-white">
                             Rekord: {highestPoints}
                         </p>
                     </div>
 
-                    <div className="flex justify-self-end items-center w-1/4">
+                    <div className="flex justify-self-end items-center w-2/5 md:w-1/4">
                         <FontAwesomeIcon
                             icon={faStopwatch}
                             size="xl"
@@ -81,7 +81,7 @@ const GamePage = () => {
                                 className="bg-green-500 h-full"
                                 style={{
                                     width: `${(timeLeft / 60000) * 100}%`,
-                                    transition: "width 0.5s linear",
+                                    transition: "width 1s linear",
                                 }}
                             ></div>
                         </div>

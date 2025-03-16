@@ -61,22 +61,22 @@ const EndGame = ({ isNewHighScore, endReason }) => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-center h-full bg-gray-800 rounded-lg shadow-lg p-4 my-4">
+        <div className="flex flex-col items-center justify-evenly md:justify-center h-full bg-neutral-800/75  backdrop-filter backdrop-blur-lg  rounded-lg shadow-lg p-4 my-4">
             <div className="flex flex-col justify-center items-center w-full">
-                <h1 className="text-7xl font-bold text-white">
+                <h1 className="text-[2.5rem] md:text-6xl font-bold text-white">
                     {endReasonText}
                 </h1>
 
                 <img
                     src={meme.url}
                     alt={meme.name}
-                    className="rounded-lg shadow-lg w-full h-auto max-w-xs my-4"
+                    className="rounded-lg shadow-lg w-full h-auto max-w-xs max-h-[360px] my-4"
                 />
             </div>
 
-            <div className="flex flex-row justify-center items-center w-1/2">
+            <div className="flex flex-col sm:flex-row justify-center items-center w-full sm:w-1/2">
                 <button
-                    className="bg-blue-500 text-white font-bold py-4 w-75 rounded m-3 text-2xl"
+                    className="bg-blue-500 text-white font-bold py-4 w-full sm:w-75 rounded m-3 text-2xl"
                     onClick={() => window.location.reload()}
                 >
                     <FontAwesomeIcon
@@ -84,11 +84,11 @@ const EndGame = ({ isNewHighScore, endReason }) => {
                         size="xl"
                         className="me-2"
                     />{" "}
-                    Uuesti Mängima
+                    Uuesti
                 </button>
 
                 <button
-                    className="bg-red-500 text-white font-bold py-4 w-75 rounded m-3 text-2xl"
+                    className="bg-red-500 text-white font-bold py-4 w-full sm:w-75 rounded m-3 text-2xl"
                     onClick={() => window.location.assign("/")}
                 >
                     <FontAwesomeIcon icon={faHome} size="xl" className="me-2" />
