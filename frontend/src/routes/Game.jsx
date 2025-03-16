@@ -4,12 +4,7 @@ const Game = memo(({ onGameRunningChange, incrementCurrentPoints }) => {
     const [currentImage, setImage] = useState("pzu1.webp");
 
     const getImagePath = (imageName) => {
-        try {
-            return `/src/assets/${imageName}`;
-        } catch (error) {
-            console.error("Error getting image path:", error);
-            return `/src/assets/${imageName}`;
-        }
+        return `./${imageName}`;
     };
 
     const validateAnswer = (answer) => {
