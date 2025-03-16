@@ -77,7 +77,7 @@ const Home = ({ onStartGame }) => {
                 console.error("Error fetching GitHub repo data:", error);
             });
 
-        /* fetch("/api/get-highscores")
+        fetch("/api/get-highscores")
             .then((response) => response.json())
             .then((data) => {
                 console.log("Highscores fetched:", data);
@@ -89,7 +89,7 @@ const Home = ({ onStartGame }) => {
             })
             .catch((error) => {
                 console.error("Error fetching highscores:", error);
-            }); */
+            });
     }, []);
 
     const [showLeaderboard, setShowLeaderboard] = useState(false);
