@@ -2,8 +2,9 @@ import express from "express";
 import pool from "../utils/db.js";
 
 const router = express.Router();
-const IMAGES = [];
+let IMAGES = [];
 
+// Load images from database on server start to avoid fetching them on every request
 (async function loadImages() {
     try {
         const [results] = await pool.query("SELECT * FROM `images`;");
