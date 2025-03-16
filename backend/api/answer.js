@@ -2,7 +2,7 @@ import express from "express";
 
 const router = express.Router();
 
-import connection from "../db.js";
+import connection from "../utils/db.js";
 
 const IMAGES = [];
 

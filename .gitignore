@@ -17,6 +17,9 @@ backend/dist
 backend/dist-ssr
 backend/*.local
 
+backend/.env
+frontend/.env
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
