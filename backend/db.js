@@ -3,9 +3,10 @@ import mysql from "mysql2";
 // Create a connection to the database
 const connection = mysql.createConnection({
     host: "localhost",
-    user: "root",
-    password: "qwerty",
-    database: "getscambo",
+    user: "heilo",
+    password: "parool",
+    database: "getscambodb",
+    port: 3306,
 });
 
 // Open the MySQL connection

@@ -20,7 +20,7 @@ router.post("/validate-answer", (req, res) => {
 
     const foundImage = IMAGES.find((img) => `${img.name}.webp` === image);
 
-    console.log(foundImage, answer, image);
+    //console.log(foundImage, answer, image, req.body);
     if (!foundImage) {
         return res.status(404).json({ error: "Image not found" });
     }
