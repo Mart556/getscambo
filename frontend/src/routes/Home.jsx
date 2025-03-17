@@ -16,48 +16,7 @@ const Home = ({ onStartGame }) => {
         localStorage.setItem("username", userName);
     }, [userName]);
 
-    const [leaderboardUsers, setLeaderboardUsers] = useState([
-        {
-            username: "User1",
-            score: Math.floor(Math.random() * 1000),
-        },
-        {
-            username: "User2",
-            score: Math.floor(Math.random() * 1000),
-        },
-        {
-            username: "User3",
-            score: Math.floor(Math.random() * 1000),
-        },
-        {
-            username: "User4",
-            score: Math.floor(Math.random() * 1000),
-        },
-        {
-            username: "User5",
-            score: Math.floor(Math.random() * 1000),
-        },
-        {
-            username: "User6",
-            score: Math.floor(Math.random() * 1000),
-        },
-        {
-            username: "User7",
-            score: Math.floor(Math.random() * 1000),
-        },
-        {
-            username: "User8",
-            score: Math.floor(Math.random() * 1000),
-        },
-        {
-            username: "User9",
-            score: Math.floor(Math.random() * 1000),
-        },
-        {
-            username: "User10",
-            score: Math.floor(Math.random() * 1000),
-        },
-    ]);
+    const [leaderboardUsers, setLeaderboardUsers] = useState([]);
 
     const [gitStars, setGitStars] = useState(0);
 
@@ -109,7 +68,7 @@ const Home = ({ onStartGame }) => {
 
     return (
         <div className="container mx-auto px-8 md:px-10 h-screen flex justify-center items-center">
-            <div className="absolute bottom-4 right-4 flex space-x-4">
+            <div className="absolute bottom-4 right-4 flex">
                 <button
                     href="#"
                     onClick={() => {

@@ -1,5 +1,8 @@
 import { useState, memo, useEffect } from "react";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faThumbsUp, faThumbsDown } from "@fortawesome/free-solid-svg-icons";
+
 const Game = memo(({ onGameRunningChange, incrementCurrentPoints }) => {
     const [currentImage, setImage] = useState("");
 
@@ -66,16 +69,16 @@ const Game = memo(({ onGameRunningChange, incrementCurrentPoints }) => {
             <div className="flex flex-row md:flex-col justify-center items-center w-full md:w-1/2">
                 <button
                     onClick={() => validateAnswer(true)}
-                    className="bg-green-500 text-white font-bold py-5 w-75 rounded m-3"
+                    className="bg-green-500 text-white font-bold py-5 w-75 rounded m-3 text-2xl"
                 >
-                    Bueno
+                    <FontAwesomeIcon icon={faThumbsUp} /> Legit
                 </button>
 
                 <button
                     onClick={() => validateAnswer(false)}
-                    className="bg-red-500 text-white font-bold py-5 w-75 rounded m-3"
+                    className="bg-red-500 text-white font-bold py-5 w-75 rounded m-3 text-2xl"
                 >
-                    No Bueno
+                    <FontAwesomeIcon icon={faThumbsDown} /> Scam
                 </button>
             </div>
         </div>

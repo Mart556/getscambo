@@ -39,9 +39,7 @@ const EndGame = ({ isNewHighScore, endReason }) => {
                 });
         };
 
-        return () => {
-            if (isNewHighScore) saveResult();
-        };
+        if (isNewHighScore) saveResult();
     }, []);
 
     const [meme, setMeme] = useState("");
