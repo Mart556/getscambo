@@ -44,16 +44,20 @@ const EndGame = ({ isNewHighScore, endReason }) => {
         };
     }, []);
 
-    const [meme, setMeme] = useState("null");
+    const [meme, setMeme] = useState("");
 
     const fetchRandomMeme = async () => {
         try {
             const response = await fetch("https://api.imgflip.com/get_memes");
-            const data = await response.json();
-            if (data.success) {
-                const memes = data.data.memes;
+            const { success, data } = await response.json();
+            if (success) {
+                const memes = data.memes;
                 const randomIndex = Math.floor(Math.random() * memes.length);
-                setMeme(memes[randomIndex]);
+                const selectedMeme = memes[randomIndex];
+
+                const img = new Image();
+                img.src = selectedMeme.url;
+                img.onload = () => setMeme(selectedMeme);
             }
         } catch (error) {
             console.error("Error fetching meme:", error);
