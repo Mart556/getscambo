@@ -32,26 +32,22 @@ const GamePage = () => {
         }
     }, [currentPoints, highestPoints]);
 
-    const [timeLeft, setTime] = useState(0);
-
+    const [timeLeft, setTime] = useState(60000);
     const intervalRef = useRef(null);
 
     useEffect(() => {
-        const countdownTime = 60000;
-        const endTime = Date.now() + countdownTime;
-
         const updateTime = () => {
-            const currentTime = Date.now();
-            const timeLeft = endTime - currentTime;
-            setTime(timeLeft > 0 ? timeLeft : 0);
+            setTime((prevTime) => {
+                if (prevTime <= 0) {
+                    handleGameRunningChange(false, "time");
+                    return 0;
+                }
 
-            if (timeLeft <= 0) {
-                handleGameRunningChange(false, "time");
-            }
+                return prevTime - 1000;
+            });
         };
 
         intervalRef.current = setInterval(updateTime, 1000);
-        updateTime();
 
         return () => clearInterval(intervalRef.current);
     }, []);

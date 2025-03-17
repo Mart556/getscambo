@@ -64,6 +64,10 @@ const Game = memo(({ onGameRunningChange, incrementCurrentPoints }) => {
                     src={getImagePath(currentImage)}
                     alt="Question"
                 />
+
+                {/* <p className="text-2xl md:text-4xl font-bold text-white">
+                    Is this meme legit or a scam?
+                </p> */}
             </div>
 
             <div className="flex flex-row md:flex-col justify-center items-center w-full md:w-1/2">
