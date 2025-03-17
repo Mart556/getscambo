@@ -33,6 +33,8 @@ const EndGame = ({ isNewHighScore, endReason }) => {
                         "lastHighScore",
                         localStorage.getItem("highestPoints") || 0
                     );
+
+                    alert("Uus rekord on salvestatud!");
                 })
                 .catch((error) => {
                     console.error("Error saving result:", error);

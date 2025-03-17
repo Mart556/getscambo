@@ -165,7 +165,7 @@ const Home = ({ onStartGame }) => {
 
                         <button
                             onClick={() => setShowLeaderboard(true)}
-                            className="bg-blue-500 p-4 md:p-8 py-3 md:py-4 rounded-lg  z-2 mt-2 w-full cursor-pointer xl:hidden"
+                            className="bg-blue-500 p-4 md:p-8 py-3 md:py-4 rounded-lg z-2 mt-2 w-full cursor-pointer xl:hidden"
                         >
                             <span className="text-xl md:text-2xl font-bold text-white flex items-center justify-center">
                                 <FontAwesomeIcon
@@ -177,7 +177,7 @@ const Home = ({ onStartGame }) => {
                         </button>
 
                         {showLeaderboard && (
-                            <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-1 xl:hidden px-8">
+                            <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-3 xl:hidden px-8">
                                 <div className="bg-neutral-800/75 backdrop-filter backdrop-blur-lg p-3 rounded-lg shadow-lg w-full max-w-lg flex flex-col">
                                     <div className="flex justify-between items-center">
                                         <h2 className="text-xl text-center md:text-2xl  font-bold text-white">
