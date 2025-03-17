@@ -65,9 +65,9 @@ const EndGame = ({ isNewHighScore, endReason }) => {
     };
 
     return (
-        <div className="flex flex-col items-center justify-evenly h-full bg-neutral-800/75  backdrop-filter backdrop-blur-lg  rounded-lg shadow-lg p-4 my-4">
+        <div className="flex flex-col items-center justify-between h-full bg-neutral-800/75  backdrop-filter backdrop-blur-lg  rounded-lg shadow-lg p-4 my-4">
             <div className="flex flex-col justify-center items-center w-full">
-                <h1 className="text-[2.5rem] md:text-6xl font-bold bg-gradient-to-r from-red-300 to-violet-300 text-transparent bg-clip-text underline underline-offset-12">
+                <h1 className="text-[2.5rem] md:text-6xl font-bold bg-gradient-to-r from-red-400 to-violet-300 text-transparent bg-clip-text underline underline-offset-12">
                     {endReasonText}
                 </h1>
             </div>

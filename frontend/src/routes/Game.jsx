@@ -45,10 +45,12 @@ const Game = memo(({ onGameRunningChange, incrementCurrentPoints }) => {
                 if (data.isCorrect) {
                     incrementCurrentPoints();
                     const imgElement = document.querySelector("img");
+                    imgElement.classList.remove("fade-in");
                     imgElement.classList.add("fade-out");
                     setTimeout(() => {
                         setImage(data.nextImage);
                         imgElement.classList.remove("fade-out");
+                        imgElement.classList.add("fade-in");
                     }, 500);
                 } else {
                     endGame();
@@ -69,7 +71,7 @@ const Game = memo(({ onGameRunningChange, incrementCurrentPoints }) => {
             <div className="flex grow justify-center items-center w-full">
                 <Zoom>
                     <img
-                        className="rounded-lg w-full max-h-fit max-w-xs"
+                        className="rounded-lg w-full h-auto max-w-xs object-cover"
                         src={getImagePath(currentImage)}
                         alt="Question"
                     />
