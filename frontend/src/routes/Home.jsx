@@ -142,7 +142,7 @@ const Home = ({ onStartGame }) => {
                     <div className="flex flex-col items-center w-full max-w-md">
                         <input
                             type="text"
-                            className="border-2 border-gray-600 p-2 rounded-lg text-center w-full bg-neutral-800  text-white"
+                            className="border-2 border-gray-600 p-2 rounded-lg text-center w-full z-3 bg-neutral-800  text-white"
                             placeholder="Sisesta Kasutajanimi"
                             value={userName}
                             onChange={(event) =>
