@@ -1,22 +1,18 @@
-import { Routes, Route, useNavigate, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 
 import Home from "./routes/Home";
 import GamePage from "./routes/GamePage";
 import ErrorPage from "./routes/ErrorPage";
+import Info from "./routes/Info";
 
 import "./App.css";
 
 function App() {
-    const navigate = useNavigate();
-
-    const startGame = () => {
-        navigate("/start");
-    };
-
     return (
         <Routes>
-            <Route path="/" element={<Home onStartGame={startGame} />} />
+            <Route path="/" element={<Home />} />
             <Route path="/start" element={<GamePage />} />
+            <Route path="/info" element={<Info />} />
             <Route path="*" element={<Navigate to="/" />} />
             <Route path="/404" element={<ErrorPage />} />
         </Routes>

@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faPlay,
@@ -7,7 +9,7 @@ import {
     faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 
-const Home = ({ onStartGame }) => {
+const Home = () => {
     const [userName, setUserName] = useState(
         localStorage.getItem("username") || ""
     );
@@ -53,17 +55,23 @@ const Home = ({ onStartGame }) => {
 
     const [showLeaderboard, setShowLeaderboard] = useState(false);
 
+    const navigate = useNavigate();
+
     const handleStartGame = () => {
         console.log("Starting the game with username:", userName);
         if (userName.length > 3) {
             localStorage.setItem("username", userName);
-            onStartGame();
+            navigate("/start");
             return;
         } else {
             alert(
                 "Sisesta kasutajnimi ja proovi uuesti! \nKasutajanimi peab olema vähemalt 4 tähemärki pikk."
             );
         }
+    };
+
+    const handleInfoPage = () => {
+        navigate("/info");
     };
 
     return (
@@ -109,11 +117,7 @@ const Home = ({ onStartGame }) => {
             </div>
 
             <div className="absolute top-4 right-4">
-                <a
-                    href="" // Info page link?
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
+                <a href="#" rel="noopener noreferrer" onClick={handleInfoPage}>
                     <FontAwesomeIcon
                         icon={faCircleInfo}
                         className="text-white text-3xl"
