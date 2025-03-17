@@ -3,6 +3,9 @@ import { useState, memo, useEffect } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp, faThumbsDown } from "@fortawesome/free-solid-svg-icons";
 
+import Zoom from "react-medium-image-zoom";
+import "react-medium-image-zoom/dist/styles.css";
+
 const Game = memo(({ onGameRunningChange, incrementCurrentPoints }) => {
     const [currentImage, setImage] = useState("");
 
@@ -41,7 +44,12 @@ const Game = memo(({ onGameRunningChange, incrementCurrentPoints }) => {
 
                 if (data.isCorrect) {
                     incrementCurrentPoints();
-                    setImage(data.nextImage);
+                    const imgElement = document.querySelector("img");
+                    imgElement.classList.add("fade-out");
+                    setTimeout(() => {
+                        setImage(data.nextImage);
+                        imgElement.classList.remove("fade-out");
+                    }, 500);
                 } else {
                     endGame();
                 }
@@ -57,20 +65,22 @@ const Game = memo(({ onGameRunningChange, incrementCurrentPoints }) => {
     };
 
     return (
-        <div className="game-screen flex flex-col md:flex-row items-center justify-between md:justify-center h-full bg-neutral-800/75  backdrop-filter backdrop-blur-lg rounded-lg shadow-lg p-4 my-4">
-            <div className="flex flex-col justify-center items-center w-full md:w-1/2 ">
-                <img
-                    className="rounded-lg shadow-lg w-full h-auto max-w-3xs md:max-w-xs h-max-[360px] my-4 object-cover"
-                    src={getImagePath(currentImage)}
-                    alt="Question"
-                />
+        <div className="game-screen flex flex-col items-center justify-between h-full bg-neutral-800/75  backdrop-filter backdrop-blur-lg rounded-lg shadow-lg p-4 my-4">
+            <div className="flex grow justify-center items-center w-full">
+                <Zoom>
+                    <img
+                        className="rounded-lg w-full max-h-fit max-w-xs"
+                        src={getImagePath(currentImage)}
+                        alt="Question"
+                    />
+                </Zoom>
 
                 {/* <p className="text-2xl md:text-4xl font-bold text-white">
                     Is this meme legit or a scam?
                 </p> */}
             </div>
 
-            <div className="flex flex-row md:flex-col justify-center items-center w-full md:w-1/2">
+            <div className="flex flex-row justify-center items-center w-full">
                 <button
                     onClick={() => validateAnswer(true)}
                     className="bg-green-500 text-white font-bold py-5 w-75 rounded m-3 text-2xl"

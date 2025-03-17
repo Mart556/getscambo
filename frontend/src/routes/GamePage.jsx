@@ -5,6 +5,8 @@ import EndGame from "./EndGame";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStopwatch } from "@fortawesome/free-solid-svg-icons";
 
+const Time = 60000;
+
 const GamePage = () => {
     const [isGameRunning, setGameRunning] = useState(true);
     const [gameEndReason, setGameEndReason] = useState("");
@@ -32,7 +34,7 @@ const GamePage = () => {
         }
     }, [currentPoints, highestPoints]);
 
-    const [timeLeft, setTime] = useState(60000);
+    const [timeLeft, setTime] = useState(Time);
     const intervalRef = useRef(null);
 
     useEffect(() => {
@@ -74,9 +76,13 @@ const GamePage = () => {
                         />{" "}
                         <div className="w-full bg-gray-700 rounded-full h-2 overflow-hidden">
                             <div
-                                className="bg-green-500 h-full"
+                                className={`h-full ${
+                                    timeLeft < 10000
+                                        ? "bg-red-500 blink"
+                                        : "bg-green-500"
+                                }`}
                                 style={{
-                                    width: `${(timeLeft / 60000) * 100}%`,
+                                    width: `${(timeLeft / Time) * 100}%`,
                                     transition: "width 1s linear",
                                 }}
                             ></div>
