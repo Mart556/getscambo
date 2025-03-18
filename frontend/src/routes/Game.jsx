@@ -85,14 +85,14 @@ const Game = memo(({ onGameRunningChange, incrementCurrentPoints }) => {
             <div className="flex flex-row justify-center items-center w-full">
                 <button
                     onClick={() => validateAnswer(true)}
-                    className="bg-green-500 text-white font-bold py-5 w-75 rounded m-3 text-2xl"
+                    className="bg-green-500 text-white font-bold py-5 w-75 rounded m-3 text-2xl cursor-pointer"
                 >
                     <FontAwesomeIcon icon={faThumbsUp} /> Legit
                 </button>
 
                 <button
                     onClick={() => validateAnswer(false)}
-                    className="bg-red-500 text-white font-bold py-5 w-75 rounded m-3 text-2xl"
+                    className="bg-red-500 text-white font-bold py-5 w-75 rounded m-3 text-2xl cursor-pointer"
                 >
                     <FontAwesomeIcon icon={faThumbsDown} /> Scam
                 </button>

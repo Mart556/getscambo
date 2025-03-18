@@ -78,6 +78,7 @@ const Home = () => {
         <div className="container mx-auto px-8 md:px-10 h-screen flex justify-center items-center">
             <div className="absolute bottom-4 right-4 flex">
                 <button
+                    type="button"
                     href="#"
                     onClick={() => {
                         window.open("https://github.com/Mart556/getscambo");
@@ -155,6 +156,7 @@ const Home = () => {
                         />
 
                         <button
+                            type="button"
                             onClick={handleStartGame}
                             className="bg-green-500 p-4 md:p-8 py-3 md:py-4 rounded-lg mt-2 z-2 w-full cursor-pointer"
                         >
@@ -168,6 +170,7 @@ const Home = () => {
                         </button>
 
                         <button
+                            type="button"
                             onClick={() => setShowLeaderboard(true)}
                             className="bg-blue-500 p-4 md:p-8 py-3 md:py-4 rounded-lg z-2 mt-2 w-full cursor-pointer xl:hidden"
                         >

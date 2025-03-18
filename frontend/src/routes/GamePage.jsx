@@ -52,7 +52,7 @@ const GamePage = () => {
         intervalRef.current = setInterval(updateTime, 1000);
 
         return () => clearInterval(intervalRef.current);
-    }, []);
+    }, [handleGameRunningChange]);
 
     return (
         <>
@@ -79,6 +79,8 @@ const GamePage = () => {
                                 className={`h-full ${
                                     timeLeft < 10000
                                         ? "bg-red-500 blink"
+                                        : timeLeft < Time / 2
+                                        ? "bg-yellow-500"
                                         : "bg-green-500"
                                 }`}
                                 style={{
