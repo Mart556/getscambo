@@ -115,3 +115,16 @@ https://www.banksneveraskthat.com/protect-yourself/
 https://www.cdse.edu/Training/Security-Awareness-Games/
 https://securityawareness.usalearning.gov/cdse/multimedia/games/citrivia/index.html#
 https://natwest.mymoneysense.com/parents/articles/avoiding-fraud-and-online-scams/
+
+12. **AI usage**
+
+For the logo we use ChatGPT to make the prompt fo the logo 
+Input to ChatGPT was:
+
+a logo for online game where you have to pick if the image is a scam or not. should be in green red purple and white colors with a scam in the middle and is readable
+
+Output  from ChatGPT was:
+
+"Create a logo for an online game where players decide if an image is a scam or not. The logo should feature bold, readable text with the word 'SCAM' in the center. Use green, red, purple, and white as the main colors. Incorporate a visual element that contrasts the legitimacy of images, like a shield or checkmark symbol to represent the decision-making aspect of the game. Make the design modern, engaging, and clear, with a strong visual emphasis on the word 'SCAM' while ensuring it's easily readable." 
+
+To create the logo we used https://fooocus.one/playground
