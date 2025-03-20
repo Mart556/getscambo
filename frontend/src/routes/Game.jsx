@@ -15,7 +15,7 @@ const Game = memo(({ onGameRunningChange, incrementCurrentPoints }) => {
 
     useEffect(() => {
         const username = localStorage.getItem("username");
-        if (!username || username.length !== 4) {
+        if (!username || username.length < 4) {
             window.location.assign("/404");
             alert("Sa pead esmalt sisestama kasutajanime!");
             return;
