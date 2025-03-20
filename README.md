@@ -2,6 +2,32 @@
 
 GetScambo is a web-based game where players determine if an image is a scam or not. The game fetches images from a database and validates user answers. The project consists of a backend API built with Express and a frontend built with React and Vite.
 
+### Gameplay 
+
+Scambo is an engaging web-based game that challenges players to identify scam images by determining their authenticity. Here's how to play:
+
+1. Objective: Your goal is to assess a series of images and decide whether each one is a scam or not.
+
+2. Viewing Images: Each round, an image is displayed for you to evaluate.
+
+3. Making a Decision: For each image, choose whether you believe it is a scam or not.
+
+4. Feedback:
+
+Correct Guess: If your assessment is accurate, you receive a point and you go to the next round.
+Incorrect Guess: If your assessment is incorrect you lose the game.
+
+5. Scoring: Accurate assessments earn points a point. Strive to accumulate the highest score possible.
+
+6. Limited Attempts: You have a finite number of images to evaluate. The game concludes when all images have been assessed in time limit or when you guess the answear wrong.
+
+7. Winning the Game: Achieve a high score by correctly identifying as many scam images as possible within the given time.
+
+8. Challenge Yourself: The game tests your ability to discern authentic images from scams, enhancing your awareness and critical thinking skills.
+
+Dive into Scambo to sharpen your scam detection abilities and enjoy the challenge of identifying deceptive images!
+
+
 ## Prerequisites
 
 -   Node.js (version 18 or higher)
@@ -47,3 +73,45 @@ pnpm dev
 
 cd frontend
 pnpm dev
+
+
+
+7. **Development Process**
+
+Identify the user group who we will make the game for.
+Design the first idea on figma for the game 
+https://www.figma.com/design/XVxEL8iIzYynoRJqmLOkQ2/h%C3%A4katon?node-id=0-1&t=gYkCMoohA8kEUFWd-1 
+For modeling the Database we used Draw.io
+Framework Vite, React, Tailwind
+
+8. **Main target group**
+
+Young people who have not recived scam mails or texts yet so they dont know what those look like.
+People who have already got scammed over an email or text and are still not sure what the scam mails look like. 
+
+9. **Design process**
+
+Because the main focus is on younger people we chose the scolor scheme from different online game platforms like:
+https://richup.io/
+https://www.crazygames.com/
+Page is made simple to navigate 
+Has a leaderboard to make it more competative
+
+
+10. **Used sources for images**
+
+For different examples of scam/real messages and e-mails we used:
+Friends and our own recived e-mails
+https://eestielu.goodnews.ee/lisatud-naited-i-millised-on-petukirjade-tunnused-politsei-selgitab/
+https://rmp.geenius.ee/uudised/maksundus-uudised/maksu-ja-tolliameti-nimel-saadetava-petukirja-ja-sonumi-aratundmine/
+https://majandus.postimees.ee/8132576/pildid-petised-levitavad-lhv-nime-all-uusi-petukirju
+https://rmp.geenius.ee/uudised/juhile/maksu-ja-tolliameti-nimel-on-liikvel-uus-petukiri/
+
+11. **Used sources for ideas**
+
+https://annabellavs23.ikt.khk.ee/veebiarendus/h%c3%a4katon/index.html
+https://www.banksneveraskthat.com/
+https://www.banksneveraskthat.com/protect-yourself/
+https://www.cdse.edu/Training/Security-Awareness-Games/
+https://securityawareness.usalearning.gov/cdse/multimedia/games/citrivia/index.html#
+https://natwest.mymoneysense.com/parents/articles/avoiding-fraud-and-online-scams/
