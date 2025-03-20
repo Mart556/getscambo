@@ -54,13 +54,30 @@ const GamePage = () => {
         return () => clearInterval(intervalRef.current);
     }, [handleGameRunningChange]);
 
+    const [bounce, setBounce] = useState(false);
+
+    useEffect(() => {
+        if (currentPoints > 0) {
+            setBounce(true);
+            const timer = setTimeout(() => setBounce(false), 500);
+            return () => clearTimeout(timer);
+        }
+    }, [currentPoints]);
+
     return (
         <>
             <div className="container mx-auto px-4 md:px-8 h-screen flex flex-col max-h-screen">
                 <div className="bg-neutral-800/75  backdrop-filter backdrop-blur-lg  p-4 rounded-lg shadow-lg mt-4 flex flex-row justify-between">
                     <div className="flex justify-start items-center">
                         <p className="text-xl md:text-2xl font-bold text-white me-3">
-                            Punkte: {currentPoints}
+                            Punkte:{" "}
+                            <span
+                                className={`${
+                                    bounce ? "bounce" : ""
+                                } inline-block`}
+                            >
+                                {currentPoints}
+                            </span>
                         </p>
 
                         <p className="text-xl md:text-2xl font-bold text-white">

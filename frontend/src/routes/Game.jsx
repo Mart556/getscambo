@@ -15,11 +15,12 @@ const Game = memo(({ onGameRunningChange, incrementCurrentPoints }) => {
 
     useEffect(() => {
         const images = [
-            "0.1.webp",
-            "0.12.webp",
+            "0.4.webp",
+            "0.13.webp",
             "0.14.webp",
-            "0.20.webp",
-            "0.21.webp",
+            "1.2.webp",
+            "1.16.webp",
+            "1.21.webp",
         ];
         const getRandomImage = () =>
             images[Math.floor(Math.random() * images.length)];
@@ -44,13 +45,21 @@ const Game = memo(({ onGameRunningChange, incrementCurrentPoints }) => {
 
                 if (data.isCorrect) {
                     incrementCurrentPoints();
+
                     const imgElement = document.querySelector("img");
-                    imgElement.classList.remove("fade-in");
-                    imgElement.classList.add("fade-out");
+                    imgElement.style.transition = "transform 0.5s ease-in-out";
+                    imgElement.style.transform = "translateX(-100%)";
                     setTimeout(() => {
                         setImage(data.nextImage);
-                        imgElement.classList.remove("fade-out");
-                        imgElement.classList.add("fade-in");
+                        imgElement.style.visibility = "hidden";
+                        imgElement.style.transition = "none";
+                        imgElement.style.transform = "translateX(100%)";
+                        setTimeout(() => {
+                            imgElement.style.visibility = "visible";
+                            imgElement.style.transition =
+                                "transform 0.5s ease-in-out";
+                            imgElement.style.transform = "translateX(0)";
+                        }, 50);
                     }, 500);
                 } else {
                     endGame();
@@ -67,19 +76,15 @@ const Game = memo(({ onGameRunningChange, incrementCurrentPoints }) => {
     };
 
     return (
-        <div className="game-screen flex flex-col items-center justify-between h-full bg-neutral-800/75  backdrop-filter backdrop-blur-lg rounded-lg shadow-lg p-4 my-4">
+        <div className="game-screen flex flex-col items-center justify-between h-full bg-neutral-800/75 backdrop-filter backdrop-blur-lg rounded-lg shadow-lg p-4 my-4">
             <div className="flex grow justify-center items-center w-full">
                 <Zoom>
                     <img
-                        className="rounded-lg w-full h-auto max-w-xs object-cover"
+                        className="rounded-lg max-w-[300px] max-h-[400px] object-contain"
                         src={getImagePath(currentImage)}
                         alt="Question"
                     />
                 </Zoom>
-
-                {/* <p className="text-2xl md:text-4xl font-bold text-white">
-                    Is this meme legit or a scam?
-                </p> */}
             </div>
 
             <div className="flex flex-row justify-center items-center w-full">
