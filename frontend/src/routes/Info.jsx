@@ -20,8 +20,11 @@ const Info = () => {
                         </h2>
 
                         <p className="text-lg md:text-2xl text-white text-center">
-                            Mängui eesmärk on ära arvata millised pildid või
-                            küsimused on tõesed ja millised mitte.
+                            Mängu eesmärk on ära arvata millised pildid või
+                            küsimused on tõesed ja millised mitte. <br />
+                            <span className="text-yellow-400">Eeldus</span> on,
+                            et oled antud teenuse kasutaja ja ootad vastava
+                            teemalist kirja.
                         </p>
                     </div>
 

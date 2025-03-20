@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
+const GitAPI = import.meta.env.VITE_REACT_APP_GITHUB_TOKEN;
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
     faPlay,
@@ -28,11 +30,20 @@ const Home = () => {
             localStorage.getItem("highestPoints") || 0
         );
 
-        fetch("https://api.github.com/repos/Mart556/getscambo")
-            .then((response) => response.json())
+        fetch("https://api.github.com/repos/Mart556/getscambo", {
+            headers: {
+                Authorization: `token ${GitAPI}`,
+            },
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
             .then((data) => {
                 console.log("GitHub repo data fetched:", data);
-                setGitStars(data.stargazers_count);
+                setGitStars(data.stargazers_count || 0);
             })
             .catch((error) => {
                 console.error("Error fetching GitHub repo data:", error);
@@ -59,13 +70,13 @@ const Home = () => {
 
     const handleStartGame = () => {
         console.log("Starting the game with username:", userName);
-        if (userName.length > 3) {
+        if (userName.length > 3 && !userName.includes(" ")) {
             localStorage.setItem("username", userName);
             navigate("/start");
             return;
         } else {
             alert(
-                "Sisesta kasutajnimi ja proovi uuesti! \nKasutajanimi peab olema vähemalt 4 tähemärki pikk."
+                "Sisesta kasutajanimi ja proovi uuesti! \nKasutajanimi peab olema vähemalt 4 tähemärki pikk ja ei tohi sisaldada tühikuid."
             );
         }
     };

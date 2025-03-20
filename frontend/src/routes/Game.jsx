@@ -14,6 +14,13 @@ const Game = memo(({ onGameRunningChange, incrementCurrentPoints }) => {
     };
 
     useEffect(() => {
+        const username = localStorage.getItem("username");
+        if (!username || username.length !== 4) {
+            window.location.assign("/404");
+            alert("Sa pead esmalt sisestama kasutajanime!");
+            return;
+        }
+
         const images = [
             "0.4.webp",
             "0.13.webp",
@@ -28,7 +35,15 @@ const Game = memo(({ onGameRunningChange, incrementCurrentPoints }) => {
         setImage(getRandomImage());
     }, []);
 
+    const [btnDisabled, setBtnDisabled] = useState(false);
+
+    // When the user clicks on the "Legit" or "Scam" button
+    // the answer buttons are first disabled to prevent multiple clicks
+    // the answer is sent to the server for validation
+
     const validateAnswer = (answer) => {
+        setBtnDisabled(true);
+
         fetch("/api/validate-answer", {
             method: "POST",
             headers: {
@@ -40,7 +55,7 @@ const Game = memo(({ onGameRunningChange, incrementCurrentPoints }) => {
             .then((data) => {
                 if (!data) {
                     console.error("No data received from the server");
-                    return;
+                    return window.location.assign("/404");
                 }
 
                 if (data.isCorrect) {
@@ -60,6 +75,8 @@ const Game = memo(({ onGameRunningChange, incrementCurrentPoints }) => {
                                 "transform 0.5s ease-in-out";
                             imgElement.style.transform = "translateX(0)";
                         }, 50);
+
+                        setBtnDisabled(false);
                     }, 500);
                 } else {
                     endGame();
@@ -89,6 +106,7 @@ const Game = memo(({ onGameRunningChange, incrementCurrentPoints }) => {
 
             <div className="flex flex-row justify-center items-center w-full">
                 <button
+                    disabled={btnDisabled}
                     onClick={() => validateAnswer(true)}
                     className="bg-green-500 text-white font-bold py-5 w-75 rounded m-3 text-2xl cursor-pointer"
                 >
@@ -96,6 +114,7 @@ const Game = memo(({ onGameRunningChange, incrementCurrentPoints }) => {
                 </button>
 
                 <button
+                    disabled={btnDisabled}
                     onClick={() => validateAnswer(false)}
                     className="bg-red-500 text-white font-bold py-5 w-75 rounded m-3 text-2xl cursor-pointer"
                 >
