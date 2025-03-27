@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import LightSwitch from './LightSwitch';
+import { ThemeProvider, useTheme } from "./ThemeContext";
 
 const GitAPI = import.meta.env.VITE_REACT_APP_GITHUB_TOKEN;
 
@@ -12,6 +14,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 const Home = () => {
+    const { darkMode } = useTheme(); // Access darkMode from ThemeContext
     const [userName, setUserName] = useState(
         localStorage.getItem("username") || ""
     );
@@ -21,7 +24,6 @@ const Home = () => {
     }, [userName]);
 
     const [leaderboardUsers, setLeaderboardUsers] = useState([]);
-
     const [gitStars, setGitStars] = useState(0);
 
     useEffect(() => {
@@ -65,7 +67,6 @@ const Home = () => {
     }, []);
 
     const [showLeaderboard, setShowLeaderboard] = useState(false);
-
     const navigate = useNavigate();
 
     const handleStartGame = () => {
@@ -86,7 +87,11 @@ const Home = () => {
     };
 
     return (
-        <div className="container mx-auto px-8 md:px-10 h-screen flex justify-center items-center">
+        <div
+            className={`container mx-auto px-8 md:px-10 h-screen flex justify-center items-center ${
+                darkMode ? "bg-darkBg text-darkText" : "bg-lightBg text-lightText"
+            }`}
+        >
             <div className="absolute bottom-4 right-4 flex">
                 <button
                     type="button"
@@ -94,7 +99,7 @@ const Home = () => {
                     onClick={() => {
                         window.open("https://github.com/Mart556/getscambo");
                     }}
-                    className="flex overflow-hidden items-center text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-black text-white shadow hover:bg-black/90 h-9 px-4 py-2 max-w-52 whitespace-pre md:flex group relative w-full justify-center gap-2 rounded-md transition-all duration-300 ease-out hover:ring-2 hover:ring-black hover:ring-offset-2"
+                    className="flex overflow-hidden items-center text-sm font-medium focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-black text-white dark:bg-gray-100 dark:text-gray-200 shadow hover:bg-black/90 h-9 px-4 py-2 max-w-52 whitespace-pre md:flex group relative w-full justify-center gap-2 rounded-md transition-all duration-300 ease-out hover:ring-2 hover:ring-black hover:ring-offset-2"
                 >
                     <span className="absolute right-0 -mt-12 h-32 w-8 translate-x-12 rotate-12 bg-white opacity-10 transition-all duration-1000 ease-out group-hover:-translate-x-40"></span>
                     <div className="flex items-center">
@@ -129,18 +134,19 @@ const Home = () => {
             </div>
 
             <div className="absolute top-4 right-4">
+            <LightSwitch/>
                 <a href="#" rel="noopener noreferrer" onClick={handleInfoPage}>
                     <FontAwesomeIcon
                         icon={faCircleInfo}
-                        className="text-white text-3xl"
+                        className={darkMode ? "text-white text-3xl" : "text-black text-3xl"}
                     />
                 </a>
             </div>
 
-            <div className="flex flex-col justify-self-center justify-center items-center h-full">
+            <div className="flex flex-col justify-self-center justify-center items-center h-full ">
                 <div className="flex flex-col justify-center pt-4">
-                    <h1 className="text-5xl md:text-6xl font-bold mx-auto text-white underline underline-offset-8">
-                        GetScambod
+                    <h1 className="text-5xl md:text-6xl font-bold mx-auto text-white dark:text-white underline underline-offset-8 bg-neutral-800 dark:bg-gray-700 rounded-lg px-6 py-8 ring shadow-xl ring-gray-900/5">
+                        GetScambod 
                     </h1>
 
                     <div className="flex justify-center mt-4">
@@ -158,7 +164,9 @@ const Home = () => {
                     <div className="flex flex-col items-center w-full max-w-md">
                         <input
                             type="text"
-                            className="border-2 border-gray-600 p-2 rounded-lg text-center w-full z-3 bg-neutral-800  text-white"
+                            className={`border-2 p-2 rounded-lg ${
+                                darkMode ? "bg-darkBg text-darkText" : "bg-lightBg text-lightText"
+                            }`}
                             placeholder="Sisesta Kasutajanimi"
                             value={userName}
                             onChange={(event) =>
@@ -169,7 +177,9 @@ const Home = () => {
                         <button
                             type="button"
                             onClick={handleStartGame}
-                            className="bg-green-500 p-4 md:p-8 py-3 md:py-4 rounded-lg mt-2 z-2 w-full cursor-pointer"
+                            className={`mt-4 px-4 py-2 rounded ${
+                                darkMode ? "bg-lime-400 text-white" : "bg-green-500 text-black"
+                            }`}
                         >
                             <span className="text-xl md:text-2xl font-bold text-white flex items-center justify-center">
                                 <FontAwesomeIcon

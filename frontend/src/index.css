@@ -6,13 +6,14 @@
     line-height: 1.5;
     font-weight: 400;
 
-    @apply bg-neutral-900;
+
 
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
 }
+
 
 @keyframes blink {
     0% {
