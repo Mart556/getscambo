@@ -7,16 +7,16 @@ import Info from "./routes/Info";
 
 import "./App.css";
 
-function App() {
-    return (
-        <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/start" element={<GamePage />} />
-            <Route path="/info" element={<Info />} />
-            <Route path="*" element={<Navigate to="/" />} />
-            <Route path="/404" element={<ErrorPage />} />
-        </Routes>
-    );
-}
+const App = () => {
+	return (
+		<Routes>
+			<Route path='/' element={<Home />} />
+			<Route path='/start' element={<GamePage />} />
+			<Route path='/info' element={<Info />} />
+			<Route path='*' element={<Navigate to='/' />} />
+			<Route path='/404' element={<ErrorPage />} />
+		</Routes>
+	);
+};
 
 export default App;
