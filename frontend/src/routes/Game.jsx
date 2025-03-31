@@ -16,23 +16,35 @@ const Game = memo(({ onGameRunningChange, incrementCurrentPoints }) => {
 	useEffect(() => {
 		const username = localStorage.getItem("username");
 		if (!username || username.length < 4) {
-			window.location.assign("/404");
 			alert("Sa pead esmalt sisestama kasutajanime!");
-			return;
+			return window.location.assign("/404");
 		}
 
-		const images = [
-			"0.4.webp",
-			"0.13.webp",
-			"0.14.webp",
-			"1.2.webp",
-			"1.16.webp",
-			"1.21.webp",
-		];
-		const getRandomImage = () =>
-			images[Math.floor(Math.random() * images.length)];
+		const loadImages = async () => {
+			try {
+				const context = import.meta.glob(
+					"../../public/*.{webp,png,jpg,jpeg,svg}"
+				);
 
-		setImage(getRandomImage());
+				const imagePaths = Object.keys(context);
+
+				if (imagePaths.length > 0) {
+					const randomImage =
+						imagePaths[
+							Math.floor(Math.random() * imagePaths.length)
+						];
+					setImage(randomImage);
+				} else {
+					console.error("No images to play with :(");
+					window.location.assign("/404");
+				}
+			} catch (error) {
+				console.error("Error loading images:", error);
+				window.location.assign("/404");
+			}
+		};
+
+		loadImages();
 	}, []);
 
 	const [btnDisabled, setBtnDisabled] = useState(false);
