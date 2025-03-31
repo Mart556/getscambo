@@ -15,33 +15,39 @@ const EndGame = ({ isNewHighScore, endReason }) => {
 		setEndReasonText(EndReasons[endReason] || "Mäng läbi!");
 	}, [endReason]);
 
-	const [meme, setMeme] = useState("");
+	const [meme, setMeme] = useState({
+		url: "",
+		name: "",
+	});
+
+	const fetchRandomMeme = async () => {
+		try {
+			const response = await fetch("https://api.imgflip.com/get_memes");
+			const { success, data } = await response.json();
+			if (success && data.memes.length > 0) {
+				const randomMeme =
+					data.memes[Math.floor(Math.random() * data.memes.length)];
+				return randomMeme;
+			}
+		} catch (error) {
+			console.error("Error fetching meme:", error);
+		}
+
+		return null;
+	};
 
 	useEffect(() => {
-		const fetchRandomMeme = async () => {
-			try {
-				const response = await fetch(
-					"https://api.imgflip.com/get_memes"
-				);
-				const { success, data } = await response.json();
-				if (success) {
-					const memes = data.memes;
-					const randomIndex = Math.floor(
-						Math.random() * memes.length
-					);
-					const selectedMeme = memes[randomIndex];
-
-					setMeme(selectedMeme);
-
-					const img = new Image();
-					img.src = selectedMeme.url;
-				}
-			} catch (error) {
-				console.error("Error fetching meme:", error);
+		const loadMeme = async () => {
+			const randomMeme = await fetchRandomMeme();
+			if (randomMeme) {
+				const img = new Image();
+				img.src = randomMeme.url;
+				img.onload = () =>
+					setMeme({ url: randomMeme.url, name: randomMeme.name });
 			}
 		};
 
-		fetchRandomMeme();
+		loadMeme();
 
 		const saveResult = () => {
 			fetch("/api/submit-score", {
