@@ -16,7 +16,7 @@ const EndGame = ({ isNewHighScore, endReason }) => {
 	}, [endReason]);
 
 	const [meme, setMeme] = useState({
-		url: "",
+		url: null,
 		name: "",
 	});
 

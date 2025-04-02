@@ -7,7 +7,7 @@ import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 
 const Game = memo(({ onGameRunningChange, incrementCurrentPoints }) => {
-	const [currentImage, setImage] = useState("");
+	const [currentImage, setImage] = useState(null);
 
 	const getImagePath = (imageName) => {
 		return `./${imageName}`;
@@ -33,7 +33,11 @@ const Game = memo(({ onGameRunningChange, incrementCurrentPoints }) => {
 						imagePaths[
 							Math.floor(Math.random() * imagePaths.length)
 						];
-					setImage(randomImage);
+
+					const imageName = randomImage.split("/").pop();
+					const imagePath = `./${imageName}`;
+
+					setImage(imagePath);
 				} else {
 					console.error("No images to play with :(");
 					window.location.assign("/404");
@@ -49,10 +53,6 @@ const Game = memo(({ onGameRunningChange, incrementCurrentPoints }) => {
 
 	const [btnDisabled, setBtnDisabled] = useState(false);
 
-	// When the user clicks on the "Legit" or "Scam" button
-	// the answer buttons are first disabled to prevent multiple clicks
-	// the answer is sent to the server for validation
-
 	const validateAnswer = (answer) => {
 		setBtnDisabled(true);
 
@@ -61,7 +61,10 @@ const Game = memo(({ onGameRunningChange, incrementCurrentPoints }) => {
 			headers: {
 				"Content-Type": "application/json",
 			},
-			body: JSON.stringify({ answer, image: currentImage }),
+			body: JSON.stringify({
+				answer,
+				image: currentImage.split("/").pop(),
+			}),
 		})
 			.then((response) => response.json())
 			.then((data) => {
