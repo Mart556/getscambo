@@ -7,84 +7,91 @@ const GitAPI = import.meta.env.VITE_REACT_APP_GITHUB_TOKEN;
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-    faPlay,
-    faCircleInfo,
-    faCrown,
-    faTimes,
+	faPlay,
+	faCircleInfo,
+	faCrown,
+	faTimes,
 } from "@fortawesome/free-solid-svg-icons";
 
 const Home = () => {
+
     const { darkMode } = useTheme(); // Access darkMode from ThemeContext
     const [userName, setUserName] = useState(
         localStorage.getItem("username") || ""
     );
 
-    useEffect(() => {
-        localStorage.setItem("username", userName);
-    }, [userName]);
+
+	useEffect(() => {
+		localStorage.setItem("username", userName);
+	}, [userName]);
+
 
     const [leaderboardUsers, setLeaderboardUsers] = useState([]);
     const [gitStars, setGitStars] = useState(0);
 
-    useEffect(() => {
-        localStorage.setItem(
-            "lastHighScore",
-            localStorage.getItem("highestPoints") || 0
-        );
 
-        fetch("https://api.github.com/repos/Mart556/getscambo", {
-            headers: {
-                Authorization: `token ${GitAPI}`,
-            },
-        })
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Network response was not ok");
-                }
-                return response.json();
-            })
-            .then((data) => {
-                console.log("GitHub repo data fetched:", data);
-                setGitStars(data.stargazers_count || 0);
-            })
-            .catch((error) => {
-                console.error("Error fetching GitHub repo data:", error);
-            });
+	useEffect(() => {
+		localStorage.setItem(
+			"lastHighScore",
+			localStorage.getItem("highestPoints") || 0
+		);
 
-        fetch("/api/get-highscores")
-            .then((response) => response.json())
-            .then((data) => {
-                console.log("Highscores fetched:", data);
-                const leaderboardUsers = data.map((user) => ({
-                    username: user.username,
-                    score: user.score,
-                }));
-                setLeaderboardUsers(leaderboardUsers);
-            })
-            .catch((error) => {
-                console.error("Error fetching highscores:", error);
-            });
-    }, []);
+		fetch("https://api.github.com/repos/Mart556/getscambo", {
+			headers: {
+				Authorization: `token ${GitAPI}`,
+			},
+		})
+			.then((response) => {
+				if (!response.ok) {
+					throw new Error("Network response was not ok");
+				}
+				return response.json();
+			})
+			.then((data) => {
+				console.log("GitHub repo data fetched:", data);
+				setGitStars(data.stargazers_count || 0);
+			})
+			.catch((error) => {
+				console.error("Error fetching GitHub repo data:", error);
+			});
+
+		fetch("/api/get-highscores")
+			.then((response) => response.json())
+			.then((data) => {
+				console.log("Highscores fetched:", data);
+				const leaderboardUsers = data.map((user) => ({
+					username: user.username,
+					score: user.score,
+				}));
+				setLeaderboardUsers(leaderboardUsers);
+			})
+			.catch((error) => {
+				console.error("Error fetching highscores:", error);
+			});
+	}, []);
+
 
     const [showLeaderboard, setShowLeaderboard] = useState(false);
     const navigate = useNavigate();
 
-    const handleStartGame = () => {
-        console.log("Starting the game with username:", userName);
-        if (userName.length > 3 && !userName.includes(" ")) {
-            localStorage.setItem("username", userName);
-            navigate("/start");
-            return;
-        } else {
-            alert(
-                "Sisesta kasutajanimi ja proovi uuesti! \nKasutajanimi peab olema vähemalt 4 tähemärki pikk ja ei tohi sisaldada tühikuid."
-            );
-        }
-    };
 
-    const handleInfoPage = () => {
-        navigate("/info");
-    };
+	const handleStartGame = () => {
+		console.log("Starting the game with username:", userName);
+		if (userName.length > 3 && !userName.includes(" ")) {
+			localStorage.setItem("username", userName);
+			navigate("/start");
+			return;
+		} else {
+			alert(
+				"Sisesta kasutajanimi ja proovi uuesti! \nKasutajanimi peab olema vähemalt 4 tähemärki pikk ja ei tohi sisaldada tühikuid."
+			);
+		}
+	};
+
+	const handleInfoPage = () => {
+		navigate("/info");
+	};
+
 
     return (
         <div
@@ -149,16 +156,17 @@ const Home = () => {
                         GetScambod 
                     </h1>
 
-                    <div className="flex justify-center mt-4">
-                        <div className="border-l-2 border-gray-600 h-15"></div>
-                    </div>
+					<div className='flex justify-center mt-4'>
+						<div className='border-l-2 border-gray-600 h-15'></div>
+					</div>
 
-                    <div className="flex justify-center align-center mt-4 rounded-4xl bg-neutral-800/75  backdrop-filter backdrop-blur-lg  max-w-fit mx-auto p-3 px-4">
-                        <p className="text-gray-200 font-medium text-lg md:text-xl  text-center">
-                            Kas scam või mitte scam?
-                        </p>
-                    </div>
-                </div>
+					<div className='flex justify-center align-center mt-4 rounded-4xl bg-neutral-800/75  backdrop-filter backdrop-blur-lg  max-w-fit mx-auto p-3 px-4'>
+						<p className='text-gray-200 font-medium text-lg md:text-xl  text-center'>
+							Kas scam või mitte scam?
+						</p>
+					</div>
+				</div>
+
 
                 <div className="flex justify-center my-10">
                     <div className="flex flex-col items-center w-full max-w-md">
@@ -190,100 +198,101 @@ const Home = () => {
                             </span>
                         </button>
 
-                        <button
-                            type="button"
-                            onClick={() => setShowLeaderboard(true)}
-                            className="bg-blue-500 p-4 md:p-8 py-3 md:py-4 rounded-lg z-2 mt-2 w-full cursor-pointer xl:hidden"
-                        >
-                            <span className="text-xl md:text-2xl font-bold text-white flex items-center justify-center">
-                                <FontAwesomeIcon
-                                    icon={faCrown}
-                                    className="me-2"
-                                />
-                                Edetabel
-                            </span>
-                        </button>
 
-                        {showLeaderboard && (
-                            <div className="fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-3 xl:hidden px-8">
-                                <div className="bg-neutral-800/75 backdrop-filter backdrop-blur-lg p-3 rounded-lg shadow-lg w-full max-w-lg flex flex-col">
-                                    <div className="flex justify-between items-center">
-                                        <h2 className="text-xl text-center md:text-2xl  font-bold text-white">
-                                            Edetabel
-                                        </h2>
-                                        <div
-                                            onClick={() =>
-                                                setShowLeaderboard(false)
-                                            }
-                                            className="cursor-pointer"
-                                        >
-                                            <FontAwesomeIcon
-                                                icon={faTimes}
-                                                size="xl"
-                                                className="text-white "
-                                            />
-                                        </div>
-                                    </div>
-                                    <hr className="text-white my-2" />
-                                    <div className="flex flex-col">
-                                        {leaderboardUsers.map((user, index) => (
-                                            <div
-                                                key={index}
-                                                className="flex justify-between items-center py-2 font-bold"
-                                            >
-                                                <span className="text-white text-lg">
-                                                    {index + 1}.
-                                                </span>
-                                                <span className="text-white">
-                                                    {user.username}
-                                                </span>
-                                                <span className="text-white">
-                                                    {user.score}{" "}
-                                                    <span className="text-xs">
-                                                        p
-                                                    </span>
-                                                </span>
-                                            </div>
-                                        ))}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
-                    </div>
-                </div>
+						<button
+							type='button'
+							onClick={() => setShowLeaderboard(true)}
+							className='bg-blue-500 p-4 md:p-8 py-3 md:py-4 rounded-lg z-2 mt-2 w-full cursor-pointer xl:hidden'
+						>
+							<span className='text-xl md:text-2xl font-bold text-white flex items-center justify-center'>
+								<FontAwesomeIcon
+									icon={faCrown}
+									className='me-2'
+								/>
+								Edetabel
+							</span>
+						</button>
 
-                <div className="hidden xl:flex justify-end w-1/2 absolute right-10 top-1/2 transform -translate-y-1/2">
-                    <div className="bg-neutral-800/75  backdrop-filter backdrop-blur-lg  p-3 rounded-lg shadow-lg w-1/2 max-w-lg flex flex-col">
-                        <h2 className="text-xl text-center md:text-2xl font-bold text-white">
-                            Edetabel
-                        </h2>
+						{showLeaderboard && (
+							<div className='fixed inset-0 bg-black bg-opacity-75 flex justify-center items-center z-3 xl:hidden px-8'>
+								<div className='bg-neutral-800/75 backdrop-filter backdrop-blur-lg p-3 rounded-lg shadow-lg w-full max-w-lg flex flex-col'>
+									<div className='flex justify-between items-center'>
+										<h2 className='text-xl text-center md:text-2xl  font-bold text-white'>
+											Edetabel
+										</h2>
+										<div
+											onClick={() =>
+												setShowLeaderboard(false)
+											}
+											className='cursor-pointer'
+										>
+											<FontAwesomeIcon
+												icon={faTimes}
+												size='xl'
+												className='text-white '
+											/>
+										</div>
+									</div>
+									<hr className='text-white my-2' />
+									<div className='flex flex-col'>
+										{leaderboardUsers.map((user, index) => (
+											<div
+												key={index}
+												className='flex justify-between items-center py-2 font-bold'
+											>
+												<span className='text-white text-lg'>
+													{index + 1}.
+												</span>
+												<span className='text-white'>
+													{user.username}
+												</span>
+												<span className='text-white'>
+													{user.score}{" "}
+													<span className='text-xs'>
+														p
+													</span>
+												</span>
+											</div>
+										))}
+									</div>
+								</div>
+							</div>
+						)}
+					</div>
+				</div>
 
-                        <hr className="text-white my-2" />
+				<div className='hidden xl:flex justify-end w-1/2 absolute right-10 top-1/2 transform -translate-y-1/2'>
+					<div className='bg-neutral-800/75  backdrop-filter backdrop-blur-lg  p-3 rounded-lg shadow-lg w-1/2 max-w-lg flex flex-col'>
+						<h2 className='text-xl text-center md:text-2xl font-bold text-white'>
+							Edetabel
+						</h2>
 
-                        <div className="flex flex-col">
-                            {leaderboardUsers.map((user, index) => (
-                                <div
-                                    key={index}
-                                    className="flex justify-between items-center py-2  font-bold"
-                                >
-                                    <span className="text-white text-lg">
-                                        {index + 1}.
-                                    </span>
-                                    <span className="text-white">
-                                        {user.username}
-                                    </span>
-                                    <span className="text-white">
-                                        {user.score}{" "}
-                                        <span className="text-xs">p</span>
-                                    </span>
-                                </div>
-                            ))}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    );
+						<hr className='text-white my-2' />
+
+						<div className='flex flex-col'>
+							{leaderboardUsers.map((user, index) => (
+								<div
+									key={index}
+									className='flex justify-between items-center py-2  font-bold'
+								>
+									<span className='text-white text-lg'>
+										{index + 1}.
+									</span>
+									<span className='text-white'>
+										{user.username}
+									</span>
+									<span className='text-white'>
+										{user.score}{" "}
+										<span className='text-xs'>p</span>
+									</span>
+								</div>
+							))}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	);
 };
 
 export default Home;

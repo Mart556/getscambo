@@ -8,7 +8,8 @@ import Info from "./routes/Info";
 
 import "./App.css"; // Your custom styles
 
-function App() {
+
+const App = () => {
   const { darkMode } = useTheme();  // Destructure darkMode
   return (
       <Routes>
@@ -20,5 +21,6 @@ function App() {
       </Routes>
   );
 }
+
 
 export default App;
