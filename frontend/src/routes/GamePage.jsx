@@ -1,4 +1,4 @@
-import { useEffect, useRef, useReducer, useCallback } from "react";
+import { useEffect, useRef, useReducer, useCallback, useState } from "react";
 import Game from "./Game";
 import EndGame from "./EndGame";
 
@@ -12,7 +12,6 @@ const initialState = {
 	highestPoints: localStorage.getItem("highestPoints") || 0,
 	isGameRunning: true,
 	gameEndReason: "",
-	timeLeft: Time,
 	bounce: false,
 };
 
@@ -35,8 +34,6 @@ const reducer = (state, action) => {
 				isGameRunning: action.payload.isRunning,
 				gameEndReason: action.payload.reason,
 			};
-		case "SET_TIME_LEFT":
-			return { ...state, timeLeft: action.payload };
 		case "STOP_BOUNCE":
 			return { ...state, bounce: false };
 		default:
@@ -51,7 +48,6 @@ const GamePage = () => {
 		highestPoints,
 		isGameRunning,
 		gameEndReason,
-		timeLeft,
 		bounce,
 	} = state;
 
@@ -72,14 +68,17 @@ const GamePage = () => {
 		}
 	}, [currentPoints, highestPoints]);
 
+	const [timeLeft, setTime] = useState(Time);
+
 	useEffect(() => {
 		const updateTime = () => {
-			dispatch((prevState) => {
-				if (prevState.timeLeft <= 0) {
+			setTime((prevTime) => {
+				if (prevTime <= 0) {
 					handleGameRunningChange(false, "time");
-					return { ...prevState, timeLeft: 0 };
+					return 0;
 				}
-				return { ...prevState, timeLeft: prevState.timeLeft - 1000 };
+
+				return prevTime - 1000;
 			});
 		};
 
