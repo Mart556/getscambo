@@ -1,12 +1,10 @@
 module.exports = {
   darkMode: 'class', // Enable class-based dark mode
+  content: ['./src/**/*.{js,jsx,ts,tsx}', './public/index.html'], // Ensure Tailwind scans all files
   theme: {
     extend: {
       colors: {
-        lightBg: "#e6e6fa", // Light purple
-        darkBg: "#4b0082", // Dark purple
-        lightText: "#000000",
-        darkText: "#ffffff",
+        
       },
     },
   },
