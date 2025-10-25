@@ -8,12 +8,13 @@ const EndReasons = {
 	["answer"]: "Vastasid valesti!",
 };
 
-const EndGame = ({ isNewHighScore, endReason }) => {
-	const [endReasonText, setEndReasonText] = useState("Mäng läbi!");
+const EndGame = () => {
+	const queryParams = new URLSearchParams(window.location.search);
+	const endReason = queryParams.get("reason");
+	const endReasonText = EndReasons[endReason] || "Mäng läbi!";
 
-	useEffect(() => {
-		setEndReasonText(EndReasons[endReason] || "Mäng läbi!");
-	}, [endReason]);
+	const isNewHighScore = false;
+	const completionTime = 0;
 
 	const [meme, setMeme] = useState({
 		url: null,
@@ -50,6 +51,7 @@ const EndGame = ({ isNewHighScore, endReason }) => {
 		loadMeme();
 
 		const saveResult = () => {
+			/* 	const difficulty = localStorage.getItem("difficulty") || "medium";
 			fetch("/api/submit-score", {
 				method: "POST",
 				headers: {
@@ -58,6 +60,8 @@ const EndGame = ({ isNewHighScore, endReason }) => {
 				body: JSON.stringify({
 					username: localStorage.getItem("username"),
 					score: localStorage.getItem("highestPoints"),
+					difficulty: difficulty,
+					completion_time: completionTime,
 				}),
 			})
 				.then((response) => response.json())
@@ -73,16 +77,16 @@ const EndGame = ({ isNewHighScore, endReason }) => {
 				})
 				.catch((error) => {
 					console.error("Error saving result:", error);
-				});
+				}); */
 		};
 
 		if (isNewHighScore) saveResult();
-	}, [isNewHighScore]);
+	}, [isNewHighScore, completionTime]);
 
 	return (
 		<div className='flex flex-col items-center justify-between h-full bg-neutral-800/75  backdrop-filter backdrop-blur-lg  rounded-lg shadow-lg p-4 my-4'>
 			<div className='flex flex-col justify-center items-center w-full'>
-				<h1 className='text-[2.5rem] md:text-6xl font-bold bg-gradient-to-r from-red-400 to-violet-300 text-transparent bg-clip-text'>
+				<h1 className='text-[2.5rem] md:text-6xl font-bold bg-linear-to-r from-red-400 to-violet-300 text-transparent bg-clip-text'>
 					{endReasonText}
 				</h1>
 			</div>
@@ -101,12 +105,7 @@ const EndGame = ({ isNewHighScore, endReason }) => {
 					className='bg-blue-500 text-white font-bold py-5  w-75 rounded m-3 text-2xl cursor-pointer'
 					onClick={() => window.location.reload()}
 				>
-					<FontAwesomeIcon
-						icon={faRepeat}
-						size='xl'
-						className='me-2'
-					/>{" "}
-					Uuesti
+					<FontAwesomeIcon icon={faRepeat} size='xl' className='me-2' /> Uuesti
 				</button>
 
 				<button

@@ -1,9 +1,13 @@
 USE `getscambo`;
 
+DROP TABLE `leaderboard`;
 CREATE TABLE `leaderboard` (
     `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
     `username` VARCHAR(50) NOT NULL,
     `score` TINYINT UNSIGNED NOT NULL,
+    `difficulty` ENUM('easy', 'medium', 'hard') NOT NULL,
+    `completion_time` INT(11) UNSIGNED,
+    `last_updated` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -20,4 +24,22 @@ CREATE TABLE `questions` (
     `question` VARCHAR(255) NOT NULL,
     `answer` TINYINT(1) UNSIGNED NOT NULL,
     PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `users` (
+    `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `username` VARCHAR(50) NOT NULL UNIQUE,
+    `password` VARCHAR(255) NOT NULL,
+    `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE `highscores` (
+    `id` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT,
+    `userId` INT(11) UNSIGNED NOT NULL,
+    `score` INT(11) NOT NULL,
+    `difficulty` ENUM('easy', 'medium', 'hard') NOT NULL,
+    `achieved_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    FOREIGN KEY (`userId`) REFERENCES `users`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

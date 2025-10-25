@@ -1,32 +1,56 @@
 import express from "express";
+import session from "express-session";
+import passport from "passport";
+import cors from "cors";
+
+import dotenv from "dotenv";
+dotenv.config();
+
 import path from "path";
 import { fileURLToPath } from "url";
 
-// Create the __dirname equivalent for ES modules
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
 const app = express();
-const port = 3000;
 
-// Middleware to parse JSON bodies
+app.use(
+	cors({
+		credentials: true,
+	})
+);
+
+app.use(
+	session({
+		secret: process.env.SESSION_SECRET,
+		resave: false,
+		saveUninitialized: false,
+		cookie: { secure: false, maxAge: 60000 * 60 },
+	})
+);
+
+app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// API routes
+app.use(passport.initialize());
+app.use(passport.session());
+
 import answerRouter from "./api/answer.js";
 app.use("/api", answerRouter);
+
+import authRouter from "./api/auth.js";
+app.use("/api/auth", authRouter);
 
 import cronJobs from "./utils/cron_jobs.js";
 cronJobs();
 
-// Serve static files from the React app
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 app.use(express.static(path.join(__dirname, "..", "frontend", "dist")));
 
-// This catch-all route should come AFTER all API routes
 app.get("*", (req, res) => {
-    res.sendFile(path.join(__dirname, "..", "frontend", "dist", "index.html"));
+	res.sendFile(path.join(__dirname, "..", "frontend", "dist", "index.html"));
 });
 
-app.listen(port, () => {
-    console.log(`Server is running on http://localhost:${port}`);
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+	console.log(`Server is running on http://localhost:${PORT}`);
 });

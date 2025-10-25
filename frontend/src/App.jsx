@@ -4,7 +4,8 @@ import Home from "./routes/Home";
 import GamePage from "./routes/GamePage";
 import ErrorPage from "./routes/ErrorPage";
 import Info from "./routes/Info";
-
+import Auth from "./routes/Auth";
+import EndGame from "./routes/EndGame";
 import "./App.css"; // Your custom styles
 
 const App = () => {
@@ -15,6 +16,8 @@ const App = () => {
 			<Route path='/info' element={<Info />} />
 			<Route path='*' element={<Navigate to='/' />} />
 			<Route path='/404' element={<ErrorPage />} />
+			<Route path='/auth' element={<Auth />} />
+			<Route path='/end' element={<EndGame />} />
 		</Routes>
 	);
 };

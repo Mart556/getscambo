@@ -34,13 +34,10 @@ router.post("/validate-answer", async (req, res) => {
 
 		let nextImage = null;
 		if (isCorrect) {
-			let filteredImages = IMAGES.filter(
-				(img) => `${img.name}.webp` !== image
-			);
+			let filteredImages = IMAGES.filter((img) => `${img.name}.webp` !== image);
 			nextImage =
-				filteredImages[
-					Math.floor(Math.random() * filteredImages.length)
-				].name + ".webp";
+				filteredImages[Math.floor(Math.random() * filteredImages.length)].name +
+				".webp";
 		}
 
 		res.json({
@@ -56,7 +53,7 @@ router.post("/validate-answer", async (req, res) => {
 router.get("/get-highscores", async (req, res) => {
 	try {
 		const [results] = await pool.query(
-			"SELECT username, score FROM `leaderboard` ORDER BY score DESC LIMIT 10"
+			"SELECT username, score, difficulty, completion_time FROM `leaderboard` ORDER BY score DESC LIMIT 10"
 		);
 		res.json(results);
 	} catch (error) {
@@ -67,11 +64,11 @@ router.get("/get-highscores", async (req, res) => {
 
 router.post("/submit-score", async (req, res) => {
 	try {
-		const { username, score } = req.body;
+		const { username, score, difficulty, completion_time } = req.body;
 
 		await pool.query(
-			"INSERT INTO `leaderboard` (username, score) VALUES (?, ?)",
-			[username, score]
+			"INSERT INTO `leaderboard` (username, score, difficulty, completion_time) VALUES (?, ?, ?, ?)",
+			[username, score, difficulty || "medium", completion_time || null]
 		);
 
 		res.json({ success: true });
