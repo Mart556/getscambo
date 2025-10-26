@@ -1,31 +1,36 @@
 import { Router } from "express";
 import passport from "passport";
-import { Strategy } from "passport-local";
+import { Strategy as LocalStrategy } from "passport-local";
 import pool from "../utils/db.js";
 import bcrypt from "bcrypt";
 
 const router = Router();
 
-passport.serializeUser((user, done) => {
-	done(null, user.id);
+passport.serializeUser((user, cb) => {
+	cb(null, user.id);
 });
 
-passport.deserializeUser((id, done) => {
-	pool.query(
-		"SELECT id, username FROM users WHERE id = ?",
-		[id],
-		(err, results) => {
-			if (err) {
-				return done(err);
-			}
-			done(null, results[0]);
+passport.deserializeUser(async (id, cb) => {
+	console.log("Deserializing user with ID:", id);
+	try {
+		const [results] = await pool.query(
+			"SELECT id, username FROM users WHERE id = ?",
+			[id]
+		);
+
+		if (results && results.length > 0) {
+			return cb(null, results[0]);
 		}
-	);
+		return cb(null, null);
+	} catch (err) {
+		console.error("Error deserializing user:", err);
+		return cb(err);
+	}
 });
 
 passport.use(
 	"local",
-	new Strategy(async (username, password, done) => {
+	new LocalStrategy(async (username, password, cb) => {
 		try {
 			const [users] = await pool.query(
 				"SELECT id, username, password FROM users WHERE username = ?",
@@ -33,19 +38,21 @@ passport.use(
 			);
 
 			if (users.length === 0) {
-				return done(null, false, { message: "User not found." });
+				return cb(null, false, { message: "User not found." });
 			}
 
 			const user = users[0];
 			const passwordMatch = await bcrypt.compare(password, user.password);
 
 			if (!passwordMatch) {
-				return done(null, false, { message: "Incorrect password." });
+				return cb(null, false, { message: "Incorrect password." });
 			}
 
-			return done(null, user);
+			const userData = { id: user.id, username: user.username };
+
+			return cb(null, userData);
 		} catch (error) {
-			return done(error);
+			return cb(error);
 		}
 	})
 );
@@ -98,13 +105,27 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", passport.authenticate("local"), (req, res) => {
-	return res.status(200).json({
+	console.log("=== LOGIN ===");
+	console.log("Session ID:", req.sessionID);
+	console.log("User:", req.user);
+	console.log("=== END === \n");
+
+	res.status(200).json({
 		message: "Login successful.",
-		user: { id: req.user.id, username: req.user.username },
+		user: req.user,
 	});
 });
 
 router.post("/logout", (req, res, next) => {
+	console.log("=== LOGOUT ===");
+	console.log("Session ID:", req.sessionID);
+	console.log("User:", req.user, req.isAuthenticated());
+	console.log("=== END === \n");
+
+	if (!req.isAuthenticated()) {
+		return res.status(401).json({ error: "Unauthorized" });
+	}
+
 	req.logout((err) => {
 		if (err) return next(err);
 		return res
@@ -114,6 +135,10 @@ router.post("/logout", (req, res, next) => {
 });
 
 router.get("/user", (req, res) => {
+	console.log("/user endpoint - isAuthenticated:", req.isAuthenticated());
+	console.log("Session ID:", req.sessionID);
+	console.log("User:", req.user);
+
 	if (req.isAuthenticated()) {
 		return res.json(req.user);
 	}

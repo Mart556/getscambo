@@ -6,11 +6,27 @@ import Game from "./Game";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faStopwatch } from "@fortawesome/free-solid-svg-icons";
 
+const DifficultyLabels = {
+	easy: "Kerge 😏",
+	medium: "Keskmine 😎",
+	hard: "Raske 💀",
+};
+
 const GamePage = () => {
-	const { currentPoints, highestPoints, isGameActive, gameTime, finishGame } =
-		useGame();
+	const {
+		currentPoints,
+		highestPoints,
+		isGameActive,
+		gameTime,
+		finishGame,
+		gameDifficulty,
+	} = useGame();
+
 	const [timeLeft, setTime] = useState(gameTime);
 	const intervalRef = useRef(null);
+
+	const gameDifficultyLabel =
+		DifficultyLabels[gameDifficulty] || gameDifficulty;
 
 	useEffect(() => {
 		const updateTime = () => {
@@ -33,28 +49,28 @@ const GamePage = () => {
 	const bounce = false;
 
 	return (
-		<div className='container mx-auto px-4 md:px-8 h-screen flex flex-col max-h-screen'>
-			<div className='bg-neutral-800/75 backdrop-filter backdrop-blur-lg p-4 rounded-lg shadow-lg mt-4 flex flex-row justify-between'>
-				<div className='flex justify-start items-center'>
-					<p className='text-xl md:text-2xl font-bold text-white me-3'>
+		<div className='container mx-auto px-4 md:px-8 h-screen flex flex-col max-h-screen bg-white dark:bg-gray-900 text-black dark:text-white'>
+			<div className='bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg mt-4 flex flex-row justify-between border border-gray-200 dark:border-gray-700'>
+				<div className='flex justify-start items-center space-x-5'>
+					<p className='text-xl md:text-2xl font-bold'>
 						Punkte:{" "}
 						<span className={`${bounce ? "bounce" : ""} inline-block`}>
 							{currentPoints}
 						</span>
 					</p>
 
-					<p className='text-xl md:text-2xl font-bold text-white'>
+					<p className='text-xl md:text-2xl font-bold'>
 						Rekord: {highestPoints}
+					</p>
+
+					<p className='text-xl md:text-2xl font-bold'>
+						Tase: {gameDifficultyLabel}
 					</p>
 				</div>
 
 				<div className='flex justify-self-end items-center w-2/5 md:w-1/4'>
-					<FontAwesomeIcon
-						icon={faStopwatch}
-						size='xl'
-						className='text-white me-3'
-					/>{" "}
-					<div className='w-full bg-gray-700 rounded-full h-2 overflow-hidden'>
+					<FontAwesomeIcon icon={faStopwatch} size='xl' className='me-3' />{" "}
+					<div className='w-full bg-gray-300 dark:bg-gray-700 rounded-full h-2 overflow-hidden'>
 						<div
 							className={`h-full ${
 								timeLeft < 10000

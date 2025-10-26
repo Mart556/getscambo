@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router";
+import { useGame } from "../context/GameContext.jsx";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRepeat, faHome } from "@fortawesome/free-solid-svg-icons";
@@ -9,9 +11,10 @@ const EndReasons = {
 };
 
 const EndGame = () => {
-	const queryParams = new URLSearchParams(window.location.search);
-	const endReason = queryParams.get("reason");
-	const endReasonText = EndReasons[endReason] || "Mäng läbi!";
+	const [searchParams] = useSearchParams();
+	const endReasonText = EndReasons[searchParams.get("reason")] || "Mäng läbi!";
+	const { startGame } = useGame();
+	const navigate = useNavigate();
 
 	const isNewHighScore = false;
 	const completionTime = 0;
@@ -84,7 +87,7 @@ const EndGame = () => {
 	}, [isNewHighScore, completionTime]);
 
 	return (
-		<div className='flex flex-col items-center justify-between h-full bg-neutral-800/75  backdrop-filter backdrop-blur-lg  rounded-lg shadow-lg p-4 my-4'>
+		<div className='flex flex-col items-center justify-between h-full bg-white dark:bg-gray-800 backdrop-filter backdrop-blur-lg rounded-lg shadow-lg p-4 my-4'>
 			<div className='flex flex-col justify-center items-center w-full'>
 				<h1 className='text-[2.5rem] md:text-6xl font-bold bg-linear-to-r from-red-400 to-violet-300 text-transparent bg-clip-text'>
 					{endReasonText}
@@ -102,16 +105,16 @@ const EndGame = () => {
 			<div className='flex flex-col sm:flex-row justify-center items-center w-full sm:w-1/2'>
 				<button
 					type='button'
-					className='bg-blue-500 text-white font-bold py-5  w-75 rounded m-3 text-2xl cursor-pointer'
-					onClick={() => window.location.reload()}
+					className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-5 w-75 rounded m-3 text-2xl cursor-pointer transition-colors'
+					onClick={() => startGame("medium")}
 				>
 					<FontAwesomeIcon icon={faRepeat} size='xl' className='me-2' /> Uuesti
 				</button>
 
 				<button
 					type='button'
-					className='bg-red-500 text-white font-bold py-5 w-75 rounded m-3 text-2xl cursor-pointer'
-					onClick={() => window.location.replace("/")}
+					className='bg-red-500 hover:bg-red-600 text-white font-bold py-5 w-75 rounded m-3 text-2xl cursor-pointer transition-colors'
+					onClick={() => navigate("/")}
 				>
 					<FontAwesomeIcon icon={faHome} size='xl' className='me-2' />
 					Tagasi

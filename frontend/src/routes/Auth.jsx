@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 import { useAuth } from "../context/AuthContext.jsx";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
@@ -52,7 +52,7 @@ const Auth = () => {
 		setIsLoading(true);
 
 		try {
-			const response = await fetch("/api/auth/register", {
+			const response = await fetch("http://localhost:3000/api/auth/register", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -87,23 +87,30 @@ const Auth = () => {
 		setIsLoading(true);
 
 		try {
-			const response = await fetch("/api/auth/login", {
+			const response = await fetch("http://localhost:3000/api/auth/login", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
+				credentials: "include",
 				body: JSON.stringify({ username, password }),
 			});
 
 			const data = await response.json();
-
+			console.log("Login response data:", data);
 			if (response.ok && data.message === "Login successful.") {
 				setSuccess(`Tere tulemast tagasi, ${data.user.username}!`);
 				localStorage.setItem("username", data.user.username);
 				setTimeout(() => {
-					navigate("/");
 					setUser(data.user);
 					setIsLoggedIn(true);
+					console.log(
+						"User logged in:",
+						data.user.username,
+						data.user.id,
+						document.cookie
+					);
+					navigate("/");
 				}, 1000);
 			} else {
 				setError(data.message || "Sisselogimine ebaõnnestus.");
@@ -117,16 +124,16 @@ const Auth = () => {
 	};
 
 	return (
-		<div className='flex flex-col items-center justify-center min-h-screen bg-linear-to-br from-gray-900 to-gray-800 px-4 py-8'>
-			<div className='bg-neutral-800/75 backdrop-filter backdrop-blur-lg p-6 md:p-8 rounded-lg shadow-2xl w-full max-w-md border border-gray-700'>
+		<div className='flex flex-col items-center justify-center min-h-screen bg-white dark:bg-gray-900 px-4 py-8'>
+			<div className='bg-white dark:bg-gray-800 backdrop-filter backdrop-blur-lg p-6 md:p-8 rounded-lg shadow-2xl w-full max-w-md border border-gray-200 dark:border-gray-700'>
 				{/* Header with Close Button */}
 				<div className='flex flex-row justify-between items-center mb-6'>
-					<h1 className='text-2xl md:text-3xl font-bold text-white'>
+					<h1 className='text-2xl md:text-3xl font-bold text-black dark:text-white'>
 						{isRegister ? "Registreeru" : "Logi Sisse"}
 					</h1>
 
 					<button
-						className='text-gray-400 hover:text-white transition-colors'
+						className='text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white transition-colors'
 						onClick={() => navigate("/")}
 						aria-label='Close'
 					>
@@ -136,14 +143,14 @@ const Auth = () => {
 
 				{/* Error Message */}
 				{error && (
-					<div className='bg-red-500/20 border border-red-500 text-red-300 p-3 rounded-lg mb-4'>
+					<div className='bg-red-100 dark:bg-red-500/20 border border-red-400 dark:border-red-500 text-red-700 dark:text-red-300 p-3 rounded-lg mb-4'>
 						{error}
 					</div>
 				)}
 
 				{/* Success Message */}
 				{success && (
-					<div className='bg-green-500/20 border border-green-500 text-green-300 p-3 rounded-lg mb-4'>
+					<div className='bg-green-100 dark:bg-green-500/20 border border-green-400 dark:border-green-500 text-green-700 dark:text-green-300 p-3 rounded-lg mb-4'>
 						{success}
 					</div>
 				)}
@@ -156,13 +163,13 @@ const Auth = () => {
 					{/* Username Field */}
 					<div>
 						<label
-							className='block text-gray-300 mb-2 font-semibold'
+							className='block text-gray-700 dark:text-gray-300 mb-2 font-semibold'
 							htmlFor='username'
 						>
 							Kasutajanimi
 						</label>
 						<input
-							className='w-full p-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 text-white placeholder-gray-400 transition-all'
+							className='w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all'
 							type='text'
 							id='username'
 							placeholder='Sisesta oma kasutajanimi'
@@ -175,14 +182,14 @@ const Auth = () => {
 					{/* Password Field */}
 					<div>
 						<label
-							className='block text-gray-300 mb-2 font-semibold'
+							className='block text-gray-700 dark:text-gray-300 mb-2 font-semibold'
 							htmlFor='password'
 						>
 							Parool
 						</label>
 						<div className='relative'>
 							<input
-								className='w-full p-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 text-white placeholder-gray-400 transition-all pr-10'
+								className='w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all pr-10'
 								type={showPassword ? "text" : "password"}
 								id='password'
 								placeholder='Sisesta oma parool'
@@ -192,7 +199,7 @@ const Auth = () => {
 							/>
 							<button
 								type='button'
-								className='absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors'
+								className='absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white transition-colors'
 								onClick={() => setShowPassword(!showPassword)}
 								disabled={isLoading}
 							>
@@ -208,14 +215,14 @@ const Auth = () => {
 					{isRegister && (
 						<div>
 							<label
-								className='block text-gray-300 mb-2 font-semibold'
+								className='block text-gray-700 dark:text-gray-300 mb-2 font-semibold'
 								htmlFor='confirmPassword'
 							>
 								Kinnita Parool
 							</label>
 							<div className='relative'>
 								<input
-									className='w-full p-3 border border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-gray-700 text-white placeholder-gray-400 transition-all pr-10'
+									className='w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all pr-10'
 									type={showConfirmPassword ? "text" : "password"}
 									id='confirmPassword'
 									placeholder='Kinnita oma parool'
@@ -225,7 +232,7 @@ const Auth = () => {
 								/>
 								<button
 									type='button'
-									className='absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-white transition-colors'
+									className='absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-white transition-colors'
 									onClick={() => setShowConfirmPassword(!showConfirmPassword)}
 									disabled={isLoading}
 								>
@@ -241,7 +248,7 @@ const Auth = () => {
 					{/* Submit Button */}
 					<button
 						type='submit'
-						className='w-full bg-linear-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100'
+						className='w-full bg-blue-500 hover:bg-blue-600 text-white font-bold py-3 px-4 rounded-lg transition-all transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100'
 						disabled={isLoading}
 					>
 						{isLoading
@@ -256,11 +263,11 @@ const Auth = () => {
 
 				{/* Toggle between Login and Register */}
 				<div className='mt-6 text-center'>
-					<p className='text-gray-400'>
+					<p className='text-gray-600 dark:text-gray-400'>
 						{isRegister ? "Juba konto olemas? " : "Konto pole? "}
 						<button
 							type='button'
-							className='text-blue-400 hover:text-blue-300 font-semibold transition-colors'
+							className='text-blue-600 dark:text-blue-400 hover:text-blue-700 dark:hover:text-blue-300 font-semibold transition-colors'
 							onClick={() => {
 								setIsRegister(!isRegister);
 								setError(null);
@@ -280,7 +287,7 @@ const Auth = () => {
 				<div className='mt-4 text-center'>
 					<button
 						type='button'
-						className='text-gray-400 hover:text-gray-300 text-sm transition-colors'
+						className='text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-300 text-sm transition-colors'
 						onClick={() => navigate("/")}
 					>
 						← Tagasi Avaleht

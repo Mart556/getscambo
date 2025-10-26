@@ -1,5 +1,5 @@
 import { createContext, useContext, useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router";
 
 const GameContext = createContext();
 
@@ -18,6 +18,7 @@ export function GameProvider({ children }) {
 	const [currentImage, setCurrentImage] = useState("");
 	const [highestPoints, setHighestPoints] = useState(0);
 	const [currentPoints, setCurrentPoints] = useState(0);
+	const [startTime, setStartTime] = useState(null);
 
 	const chooseRandomImage = () => {
 		const context = import.meta.glob("../../public/*.{webp,png,jpg,jpeg,svg}");
@@ -37,6 +38,7 @@ export function GameProvider({ children }) {
 		const gameTime = DIFFICULTY_LEVELS[difficulty];
 		if (!gameTime) return;
 
+		setStartTime(Date.now());
 		setGameDifficulty(difficulty);
 		setGameTime(gameTime);
 		setCurrentPoints(0);
@@ -49,11 +51,39 @@ export function GameProvider({ children }) {
 	const finishGame = (badAnswer) => {
 		setGameActive(false);
 
-		// TODO: Fetch server to update leaderboard
-
-		const newHighscore = currentPoints > highestPoints;
+		const newHighscore = currentPoints > localStorage.getItem("highestPoints");
 		if (newHighscore) {
 			setHighestPoints(currentPoints);
+			localStorage.setItem("highestPoints", currentPoints);
+
+			console.log("Submitting score:", {
+				score: currentPoints,
+				difficulty: gameDifficulty,
+				completion_time: startTime ? (Date.now() - startTime) / 1000 : null,
+			});
+
+			fetch("/api/submit-score", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				credentials: "include",
+				body: JSON.stringify({
+					score: currentPoints,
+					difficulty: gameDifficulty,
+					completion_time: startTime ? (Date.now() - startTime) / 1000 : null,
+				}),
+			})
+				.then((response) => response.json())
+				.then((data) => {
+					if (response.ok) {
+						console.log("Result saved:", data);
+						alert("Uus rekord! Sinu tulemus on salvestatud edetabelisse.");
+					}
+				})
+				.catch((error) => {
+					console.error("Error submitting score:", error);
+				});
 		}
 
 		if (badAnswer) {
@@ -64,71 +94,45 @@ export function GameProvider({ children }) {
 	};
 
 	const answerQuestion = (answer) => {
+		console.log("Submitting answer:", answer, "for image:", currentImage);
 		fetch("/api/validate-answer", {
 			method: "POST",
 			headers: {
 				"Content-Type": "application/json",
 			},
+			credentials: "include",
 			body: JSON.stringify({
 				answer,
 				image: currentImage.split("/").pop(),
 			}),
 		})
-			.then((response) => response.json())
-			.then((data) => {
-				if (!data) {
-					console.error("No data received from the server");
-					return window.location.assign("/404");
+			.then((response) => {
+				console.log("Response status:", response.status, response.statusText);
+				if (!response.ok) {
+					throw new Error(`HTTP error! status: ${response.status}`);
 				}
-
-				if (data.isCorrect) {
-					const newPoints = currentPoints + 1;
-					setCurrentPoints(newPoints);
-
-					const imgElement = document.querySelector("img");
-					const newImage = new Image();
-					newImage.src = getImagePath(data.nextImage);
-
-					const animateImageTransition = () => {
-						imgElement.style.transition = "transform 0.5s ease-in-out";
-						imgElement.style.transform = "translateX(-100%)";
-
-						newImage.onload = () => {
-							setTimeout(() => {
-								setImage(data.nextImage);
-
-								imgElement.style.visibility = "hidden";
-								resetImageStyles();
-							}, 500);
-						};
-					};
-
-					const resetImageStyles = () => {
-						imgElement.style.transition = "none";
-						imgElement.style.transform = "translateX(100%)";
-
-						setTimeout(() => {
-							imgElement.style.visibility = "visible";
-							imgElement.style.transition = "transform 0.5s ease-in-out";
-							imgElement.style.transform = "translateX(0)";
-							setBtnDisabled(false);
-						}, 50);
-					};
-
-					animateImageTransition();
+				return response.json();
+			})
+			.then((data) => {
+				console.log("Answer validation response:", data);
+				if (data && data.isCorrect) {
+					setCurrentPoints(currentPoints + 1);
+					setCurrentImage(data.nextImage);
 				} else {
-					finishGame();
+					finishGame(true);
 				}
 			})
 			.catch((error) => {
-				console.error("Error:", error);
-				window.location.assign("/404");
+				console.error("Error in answerQuestion:", error);
+				console.error("Error message:", error.message);
+				console.error("Error stack:", error.stack);
 			});
 	};
 
 	return (
 		<GameContext.Provider
 			value={{
+				currentPoints,
 				isGameActive,
 				gameDifficulty,
 				gameTime,

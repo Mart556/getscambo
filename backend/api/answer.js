@@ -4,7 +4,6 @@ import pool from "../utils/db.js";
 const router = express.Router();
 let IMAGES = [];
 
-// Load images from database on server start to avoid fetching them on every request
 (async function loadImages() {
 	try {
 		const [results] = await pool.query("SELECT * FROM `images`;");
@@ -16,10 +15,14 @@ let IMAGES = [];
 })();
 
 router.post("/validate-answer", async (req, res) => {
+	if (!req.isAuthenticated()) {
+		return res.status(401).json({ error: "Unauthorized" });
+	}
+
 	try {
 		const { answer, image } = req.body;
 
-		const foundImage = IMAGES.find((img) => `${img.name}.webp` === image);
+		let foundImage = IMAGES.find((img) => `${img.name}.webp` === image);
 
 		if (!foundImage) {
 			return res.status(404).json({ error: "Image not found" });
@@ -55,6 +58,7 @@ router.get("/get-highscores", async (req, res) => {
 		const [results] = await pool.query(
 			"SELECT username, score, difficulty, completion_time FROM `leaderboard` ORDER BY score DESC LIMIT 10"
 		);
+		console.log("Fetched highscores:", results);
 		res.json(results);
 	} catch (error) {
 		console.error("Error fetching highscores:", error);
@@ -63,19 +67,35 @@ router.get("/get-highscores", async (req, res) => {
 });
 
 router.post("/submit-score", async (req, res) => {
-	try {
-		const { username, score, difficulty, completion_time } = req.body;
+	console.log("Submit score request received");
+	console.log("Is authenticated:", req.isAuthenticated());
 
+	if (!req.isAuthenticated()) {
+		console.log("User not authenticated - returning 401");
+		return res.status(401).json({ error: "Unauthorized" });
+	}
+
+	try {
+		const { score, difficulty, completion_time } = req.body;
+		console.log(
+			`Submitting score for user ${req.user.username}: ${score} (Difficulty: ${difficulty}, Time: ${completion_time})`
+		);
 		await pool.query(
 			"INSERT INTO `leaderboard` (username, score, difficulty, completion_time) VALUES (?, ?, ?, ?)",
-			[username, score, difficulty || "medium", completion_time || null]
+			[
+				req.user.username,
+				score,
+				difficulty || "medium",
+				completion_time || null,
+			]
 		);
 
-		res.json({ success: true });
+		res.sendStatus(201);
 	} catch (error) {
 		console.error("Error submitting score:", error);
 		res.status(500).json({ error: "Database error" });
 	}
 });
+
 
 export default router;
