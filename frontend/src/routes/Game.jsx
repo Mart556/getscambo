@@ -1,11 +1,11 @@
+import { useState, useEffect } from "react";
 import { useGame } from "../context/GameContext.jsx";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faThumbsUp, faThumbsDown } from "@fortawesome/free-solid-svg-icons";
 
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
-import { useState, useEffect } from "react";
+
+import { TbFishHook } from "react-icons/tb";
+import { GrValidate } from "react-icons/gr";
 
 const Game = () => {
 	const { currentImage, answerQuestion } = useGame();
@@ -41,25 +41,27 @@ const Game = () => {
 				</Zoom>
 			</div>
 
-			<div className='flex flex-row justify-center items-center w-full'>
+			<div className='flex flex-row justify-center items-center w-full space-x-4 text-white font-bold'>
 				<button
 					onClick={() => answerQuestion(true)}
-					className='bg-green-500 hover:bg-green-600 text-white font-bold py-5 w-75 rounded m-3 text-2xl cursor-pointer transition-colors'
+					className='bg-green-500 hover:bg-green-600  py-4 px-2 md:py-5  w-1/2  md:w-1/2 rounded md:m-3  transition-colors'
 				>
-					<FontAwesomeIcon icon={faThumbsUp} /> Legit
+					<span className='flex items-center justify-center text-md xs:text-xl md:text-3xl'>
+						<GrValidate className='me-2' /> Usaldusväärne
+					</span>
 				</button>
 
 				<button
 					onClick={() => answerQuestion(false)}
-					className='bg-red-500 hover:bg-red-600 text-white font-bold py-5 w-75 rounded m-3 text-2xl cursor-pointer transition-colors'
+					className='bg-red-500 hover:bg-red-600 py-4 px-2 md:py-5 w-1/2  md:w-1/2 rounded md:m-3 transition-colors'
 				>
-					<FontAwesomeIcon icon={faThumbsDown} /> Scam
+					<span className='flex items-center justify-center text-md xs:text-xl md:text-3xl '>
+						<TbFishHook className='me-2' /> Õngitsus
+					</span>
 				</button>
 			</div>
 		</div>
 	);
 };
-
-
 
 export default Game;

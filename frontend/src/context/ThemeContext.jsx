@@ -4,7 +4,6 @@ const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
   const [isDark, setIsDark] = useState(() => {
-		// Check if the theme is stored in localStorage on the client side
 		if (typeof window !== "undefined") {
 			return localStorage.getItem("theme") === "dark";
 		}
@@ -12,7 +11,6 @@ export function ThemeProvider({ children }) {
 	});
 
 	useEffect(() => {
-		// Only run the effect client-side to avoid SSR issues
 		if (typeof window !== "undefined") {
 			if (isDark) {
 				document.documentElement.classList.add("dark");

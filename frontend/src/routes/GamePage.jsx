@@ -1,10 +1,9 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, Activity } from "react";
 import { useGame } from "../context/GameContext.jsx";
 
 import Game from "./Game";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStopwatch } from "@fortawesome/free-solid-svg-icons";
+import { FaStopwatch } from "react-icons/fa6";
 
 const DifficultyLabels = {
 	easy: "Kerge 😏",
@@ -50,27 +49,101 @@ const GamePage = () => {
 
 	return (
 		<div className='container mx-auto px-4 md:px-8 h-screen flex flex-col max-h-screen bg-white dark:bg-gray-900 text-black dark:text-white'>
-			<div className='bg-white dark:bg-gray-800 p-4 rounded-lg shadow-lg mt-4 flex flex-row justify-between border border-gray-200 dark:border-gray-700'>
-				<div className='flex justify-start items-center space-x-5'>
-					<p className='text-xl md:text-2xl font-bold'>
-						Punkte:{" "}
-						<span className={`${bounce ? "bounce" : ""} inline-block`}>
+			<div className='md:hidden flex flex-col gap-3 mt-4'>
+				<div className='grid grid-cols-2 gap-3'>
+					<div className='bg-white dark:bg-gray-800 p-3 rounded-lg shadow-md border border-gray-200 dark:border-gray-700'>
+						<p className='text-xs text-gray-600 dark:text-gray-400 font-semibold uppercase'>
+							Punkte
+						</p>
+						<p className='text-2xl font-bold text-blue-600 dark:text-blue-400'>
 							{currentPoints}
-						</span>
-					</p>
-
-					<p className='text-xl md:text-2xl font-bold'>
-						Rekord: {highestPoints}
-					</p>
-
-					<p className='text-xl md:text-2xl font-bold'>
-						Tase: {gameDifficultyLabel}
-					</p>
+						</p>
+					</div>
+					<div className='bg-white dark:bg-gray-800 p-3 rounded-lg shadow-md border border-gray-200 dark:border-gray-700'>
+						<p className='text-xs text-gray-600 dark:text-gray-400 font-semibold uppercase'>
+							Rekord
+						</p>
+						<p className='text-2xl font-bold text-purple-600 dark:text-purple-400'>
+							{highestPoints}
+						</p>
+					</div>
 				</div>
 
-				<div className='flex justify-self-end items-center w-2/5 md:w-1/4'>
-					<FontAwesomeIcon icon={faStopwatch} size='xl' className='me-3' />{" "}
-					<div className='w-full bg-gray-300 dark:bg-gray-700 rounded-full h-2 overflow-hidden'>
+				<div className='flex gap-3'>
+					<div className='flex-1 bg-white dark:bg-gray-800 p-3 rounded-lg shadow-md border border-gray-200 dark:border-gray-700'>
+						<p className='text-xs text-gray-600 dark:text-gray-400 font-semibold uppercase'>
+							Tase
+						</p>
+						<p className='text-sm font-bold text-orange-600 dark:text-orange-400'>
+							{gameDifficultyLabel}
+						</p>
+					</div>
+					<div className='flex-1 bg-white dark:bg-gray-800 p-3 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 flex flex-col justify-center'>
+						<div className='flex items-center gap-2 mb-2'>
+							<FaStopwatch className='text-lg' />
+							<p className='text-xs text-gray-600 dark:text-gray-400 font-semibold uppercase'>
+								Aeg
+							</p>
+						</div>
+						<div className='w-full bg-gray-300 dark:bg-gray-600 rounded-full h-2 overflow-hidden'>
+							<div
+								className={`h-full ${
+									timeLeft < 10000
+										? "bg-red-500 blink"
+										: timeLeft < gameTime / 2
+										? "bg-yellow-500"
+										: "bg-green-500"
+								}`}
+								style={{
+									width: `${(timeLeft / gameTime) * 100}%`,
+									transition: "width 1s linear",
+								}}
+							></div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div className='hidden md:flex flex-col gap-4 mt-4'>
+				<div className='grid grid-cols-3 gap-4'>
+					<div className='bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md border border-gray-200 dark:border-gray-700'>
+						<p className='text-xs text-gray-600 dark:text-gray-400 font-semibold uppercase mb-2'>
+							Punkte
+						</p>
+						<p className='text-3xl font-bold text-blue-600 dark:text-blue-400'>
+							<span className={`${bounce ? "bounce" : ""} inline-block`}>
+								{currentPoints}
+							</span>
+						</p>
+					</div>
+
+					<div className='bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md border border-gray-200 dark:border-gray-700'>
+						<p className='text-xs text-gray-600 dark:text-gray-400 font-semibold uppercase mb-2'>
+							Rekord
+						</p>
+						<p className='text-3xl font-bold text-purple-600 dark:text-purple-400'>
+							{highestPoints}
+						</p>
+					</div>
+
+					<div className='bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md border border-gray-200 dark:border-gray-700'>
+						<p className='text-xs text-gray-600 dark:text-gray-400 font-semibold uppercase mb-2'>
+							Tase
+						</p>
+						<p className='text-3xl font-bold text-orange-600 dark:text-orange-400'>
+							{gameDifficultyLabel}
+						</p>
+					</div>
+				</div>
+
+				<div className='bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md border border-gray-200 dark:border-gray-700'>
+					<div className='flex items-center gap-3 mb-3'>
+						<FaStopwatch className='text-xl text-gray-600 dark:text-gray-400' />
+						<p className='text-xs text-gray-600 dark:text-gray-400 font-semibold uppercase'>
+							Aeg jäänud
+						</p>
+					</div>
+					<div className='w-full bg-gray-300 dark:bg-gray-600 rounded-full h-3 overflow-hidden'>
 						<div
 							className={`h-full ${
 								timeLeft < 10000
@@ -85,10 +158,15 @@ const GamePage = () => {
 							}}
 						></div>
 					</div>
+					<p className='text-xs text-gray-600 dark:text-gray-400 mt-2 text-right'>
+						{Math.ceil(timeLeft / 1000)}s
+					</p>
 				</div>
 			</div>
 
-			{isGameActive && <Game />}
+			<Activity mode={isGameActive ? "visible" : "hidden"}>
+				<Game />
+			</Activity>
 		</div>
 	);
 };

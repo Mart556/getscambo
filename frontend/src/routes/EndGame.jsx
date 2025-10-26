@@ -2,8 +2,8 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import { useGame } from "../context/GameContext.jsx";
 
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faRepeat, faHome } from "@fortawesome/free-solid-svg-icons";
+import { FaHome } from "react-icons/fa";
+import { FaRepeat } from "react-icons/fa6";
 
 const EndReasons = {
 	["time"]: "Aeg sai otsa!",
@@ -87,9 +87,9 @@ const EndGame = () => {
 	}, [isNewHighScore, completionTime]);
 
 	return (
-		<div className='flex flex-col items-center justify-between h-full bg-white dark:bg-gray-800 backdrop-filter backdrop-blur-lg rounded-lg shadow-lg p-4 my-4'>
+		<div className='flex flex-col items-center justify-around h-full min-h-screen bg-white dark:bg-gray-800 backdrop-filter backdrop-blur-lg rounded-lg shadow-lg p-4 my-4'>
 			<div className='flex flex-col justify-center items-center w-full'>
-				<h1 className='text-[2.5rem] md:text-6xl font-bold bg-linear-to-r from-red-400 to-violet-300 text-transparent bg-clip-text'>
+				<h1 className='text-4xl sm:text-5xl md:text-6xl font-bold bg-linear-to-r from-red-400 to-violet-300 text-transparent bg-clip-text'>
 					{endReasonText}
 				</h1>
 			</div>
@@ -108,7 +108,9 @@ const EndGame = () => {
 					className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-5 w-75 rounded m-3 text-2xl cursor-pointer transition-colors'
 					onClick={() => startGame("medium")}
 				>
-					<FontAwesomeIcon icon={faRepeat} size='xl' className='me-2' /> Uuesti
+					<span className='flex items-center justify-center text-2xl md:text-3xl'>
+						<FaRepeat className='me-2' /> Uuesti
+					</span>
 				</button>
 
 				<button
@@ -116,8 +118,9 @@ const EndGame = () => {
 					className='bg-red-500 hover:bg-red-600 text-white font-bold py-5 w-75 rounded m-3 text-2xl cursor-pointer transition-colors'
 					onClick={() => navigate("/")}
 				>
-					<FontAwesomeIcon icon={faHome} size='xl' className='me-2' />
-					Tagasi
+					<span className='flex items-center justify-center text-2xl md:text-3xl'>
+						<FaHome className='me-2' /> Tagasi
+					</span>
 				</button>
 			</div>
 		</div>
