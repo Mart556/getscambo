@@ -6,14 +6,17 @@ const Info = () => {
 	const navigate = useNavigate();
 
 	return (
-		<div className='container flex-col flex justify-center mx-auto px-4 md:px-8 min-h-screen py-8 bg-white dark:bg-gray-900 text-black dark:text-white'>
+		<div className='container flex-col flex justify-center mx-auto px-4 md:px-8 min-h-screen py-8  dark:bg-gray-900 text-black dark:text-white'>
 			<div className='mb-12 text-center'>
 				<h1 className='text-5xl md:text-6xl font-bold mb-2'>Info</h1>
 				<div className='h-1 w-20 bg-blue-500 mx-auto rounded-full'></div>
+				<p className='text-sm md:text-base font-semibold text-gray-900 dark:text-gray-100 mt-2'>
+					Versioon: 3.0
+				</p>
 			</div>
 
 			<div className='grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8 max-w-5xl mx-auto'>
-				<div className='bg-white dark:bg-gray-800 p-6 md:p-8 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow'>
+				<div className=' dark:bg-gray-800 p-6 md:p-8 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow'>
 					<div className='flex items-center gap-3 mb-4'>
 						<MdDescription className='text-3xl text-blue-500' />
 						<h2 className='text-2xl md:text-3xl font-bold'>Kirjeldus</h2>
@@ -29,7 +32,7 @@ const Info = () => {
 					</p>
 				</div>
 
-				<div className='bg-white dark:bg-gray-800 p-6 md:p-8 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow'>
+				<div className=' dark:bg-gray-800 p-6 md:p-8 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 hover:shadow-xl transition-shadow'>
 					<div className='flex items-center gap-3 mb-4'>
 						<MdRule className='text-3xl text-purple-500' />
 						<h2 className='text-2xl md:text-3xl font-bold'>Reeglid</h2>

@@ -54,10 +54,10 @@ const GamePage = () => {
 	const bounce = false;
 
 	return (
-		<div className='container mx-auto px-4 md:px-8 h-screen flex flex-col max-h-screen bg-white dark:bg-gray-900 text-black dark:text-white'>
+		<div className='container mx-auto px-4 md:px-8 h-screen flex flex-col max-h-screen  dark:bg-gray-900 text-black dark:text-white'>
 			<div className='md:hidden flex flex-col gap-3 mt-4'>
 				<div className='grid grid-cols-2 gap-3'>
-					<div className='bg-white dark:bg-gray-800 p-3 rounded-lg shadow-md border border-gray-200 dark:border-gray-700'>
+					<div className=' dark:bg-gray-800 p-3 rounded-lg shadow-md border border-gray-200 dark:border-gray-700'>
 						<p className='text-xs text-gray-600 dark:text-gray-400 font-semibold uppercase'>
 							Punkte
 						</p>
@@ -65,7 +65,7 @@ const GamePage = () => {
 							{currentPoints}
 						</p>
 					</div>
-					<div className='bg-white dark:bg-gray-800 p-3 rounded-lg shadow-md border border-gray-200 dark:border-gray-700'>
+					<div className=' dark:bg-gray-800 p-3 rounded-lg shadow-md border border-gray-200 dark:border-gray-700'>
 						<p className='text-xs text-gray-600 dark:text-gray-400 font-semibold uppercase'>
 							Rekord
 						</p>
@@ -76,7 +76,7 @@ const GamePage = () => {
 				</div>
 
 				<div className='flex gap-3'>
-					<div className='flex-1 bg-white dark:bg-gray-800 p-3 rounded-lg shadow-md border border-gray-200 dark:border-gray-700'>
+					<div className='flex-1  dark:bg-gray-800 p-3 rounded-lg shadow-md border border-gray-200 dark:border-gray-700'>
 						<p className='text-xs text-gray-600 dark:text-gray-400 font-semibold uppercase'>
 							Tase
 						</p>
@@ -84,7 +84,7 @@ const GamePage = () => {
 							{gameDifficultyLabel}
 						</p>
 					</div>
-					<div className='flex-1 bg-white dark:bg-gray-800 p-3 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 flex flex-col justify-center'>
+					<div className='flex-1  dark:bg-gray-800 p-3 rounded-lg shadow-md border border-gray-200 dark:border-gray-700 flex flex-col justify-center'>
 						<div className='flex items-center gap-2 mb-2'>
 							<FaStopwatch className='text-lg' />
 							<p className='text-xs text-gray-600 dark:text-gray-400 font-semibold uppercase'>
@@ -112,7 +112,7 @@ const GamePage = () => {
 
 			<div className='hidden md:flex flex-col gap-4 mt-4'>
 				<div className='grid grid-cols-3 gap-4'>
-					<div className='bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md border border-gray-200 dark:border-gray-700'>
+					<div className=' dark:bg-gray-800 p-4 rounded-lg shadow-md border border-gray-200 dark:border-gray-700'>
 						<p className='text-xs text-gray-600 dark:text-gray-400 font-semibold uppercase mb-2'>
 							Punkte
 						</p>
@@ -123,7 +123,7 @@ const GamePage = () => {
 						</p>
 					</div>
 
-					<div className='bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md border border-gray-200 dark:border-gray-700'>
+					<div className=' dark:bg-gray-800 p-4 rounded-lg shadow-md border border-gray-200 dark:border-gray-700'>
 						<p className='text-xs text-gray-600 dark:text-gray-400 font-semibold uppercase mb-2'>
 							Rekord
 						</p>
@@ -132,7 +132,7 @@ const GamePage = () => {
 						</p>
 					</div>
 
-					<div className='bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md border border-gray-200 dark:border-gray-700'>
+					<div className=' dark:bg-gray-800 p-4 rounded-lg shadow-md border border-gray-200 dark:border-gray-700'>
 						<p className='text-xs text-gray-600 dark:text-gray-400 font-semibold uppercase mb-2'>
 							Tase
 						</p>
@@ -142,7 +142,7 @@ const GamePage = () => {
 					</div>
 				</div>
 
-				<div className='bg-white dark:bg-gray-800 p-4 rounded-lg shadow-md border border-gray-200 dark:border-gray-700'>
+				<div className=' dark:bg-gray-800 p-4 rounded-lg shadow-md border border-gray-200 dark:border-gray-700'>
 					<div className='flex items-center gap-3 mb-3'>
 						<FaStopwatch className='text-xl text-gray-600 dark:text-gray-400' />
 						<p className='text-xs text-gray-600 dark:text-gray-400 font-semibold uppercase'>

@@ -5,10 +5,18 @@ import { useAuth } from "../../context/AuthContext.jsx";
 
 const Header = () => {
 	const navigate = useNavigate();
-	const { isLoggedIn, logout } = useAuth();
+	const { isLoggedIn, logout, user } = useAuth();
 
 	return (
-		<header className='bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-4 px-4 md:px-8 shadow-sm'>
+		<header className='dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 py-4 px-4 md:px-8 shadow-sm flex justify-between items-center'>
+			<div className='flex justify-start items-center space-x-3 w-full'>
+				{isLoggedIn && user && (
+					<p className='text-sm md:text-2xl font-semibold text-gray-900 dark:text-gray-100'>
+						Tere, {user.username}!
+					</p>
+				)}
+			</div>
+
 			<div className='flex items-center justify-end space-x-3 w-full'>
 				{isLoggedIn && (
 					<button
@@ -23,7 +31,7 @@ const Header = () => {
 
 				<button
 					onClick={() => navigate("/info")}
-					className='p-2 rounded-full cursor-pointer  text-black dark:text-white text-3xl bg-gray-200 dark:bg-inherit dark:hover:bg-gray-700 transition-colors'
+					className='p-2 rounded-full cursor-pointer  text-black dark:text-white text-3xl bg-gray-200 dark:bg-inherit dark:hover:bg-gray-700 transition-colors hover:bg-gray-300'
 					title='Info'
 				>
 					<AiOutlineInfo />

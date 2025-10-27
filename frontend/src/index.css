@@ -16,14 +16,14 @@
 	-moz-osx-font-smoothing: grayscale;
 }
 
-html {
-	background-color: var(--color-natural-200);
+html:not(.dark) > body {
+	background-color: var(--color-neutral-200);
 	color: var(--color-gray-900);
 }
 
 html.dark {
 	background-color: var(--color-gray-900);
-	color: var(--color-natural-200);
+	color: var(--color-neutral-200);
 }
 
 button {

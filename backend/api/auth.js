@@ -105,11 +105,6 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", passport.authenticate("local"), (req, res) => {
-	console.log("=== LOGIN ===");
-	console.log("Session ID:", req.sessionID);
-	console.log("User:", req.user);
-	console.log("=== END === \n");
-
 	res.status(200).json({
 		message: "Login successful.",
 		user: req.user,
@@ -117,11 +112,6 @@ router.post("/login", passport.authenticate("local"), (req, res) => {
 });
 
 router.post("/logout", (req, res, next) => {
-	console.log("=== LOGOUT ===");
-	console.log("Session ID:", req.sessionID);
-	console.log("User:", req.user, req.isAuthenticated());
-	console.log("=== END === \n");
-
 	if (!req.isAuthenticated()) {
 		return res.status(401).json({ error: "Unauthorized" });
 	}
@@ -135,10 +125,6 @@ router.post("/logout", (req, res, next) => {
 });
 
 router.get("/user", (req, res) => {
-	console.log("/user endpoint - isAuthenticated:", req.isAuthenticated());
-	console.log("Session ID:", req.sessionID);
-	console.log("User:", req.user);
-
 	if (req.isAuthenticated()) {
 		return res.json(req.user);
 	}

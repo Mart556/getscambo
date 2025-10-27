@@ -47,7 +47,7 @@ const Leaderboard = ({
 
 	if (isDesktop) {
 		return (
-			<div className='flex-col flex bg-white min-h-full dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-200 dark:border-gray-700 '>
+			<div className='flex-col flex  min-h-full dark:bg-gray-800 p-6 rounded-xl shadow-lg border border-gray-300 dark:border-gray-700 '>
 				<div className='flex items-center justify-center gap-2 mb-4'>
 					<FontAwesomeIcon
 						icon={faCrown}
@@ -115,7 +115,7 @@ const Leaderboard = ({
 
 	return (
 		<div className='fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 lg:hidden px-4 py-8'>
-			<div className='bg-white dark:bg-gray-800 p-6 rounded-xl shadow-2xl w-full max-w-lg max-h-96 overflow-y-auto flex flex-col border border-gray-200 dark:border-gray-700'>
+			<div className=' dark:bg-gray-800 p-6 rounded-xl shadow-2xl w-full max-w-lg max-h-96 overflow-y-auto flex flex-col border border-gray-200 dark:border-gray-700'>
 				<div className='flex justify-between items-center mb-6'>
 					<div className='flex items-center gap-2'>
 						<FontAwesomeIcon

@@ -5,7 +5,7 @@ const ErrorPage = () => {
 	const navigate = useNavigate();
 
 	return (
-		<div className='flex flex-col items-center justify-center min-h-screen bg-white dark:bg-gray-900 text-black dark:text-white'>
+		<div className='flex flex-col items-center justify-center min-h-screen  dark:bg-gray-900 text-black dark:text-white'>
 			<h1 className='text-8xl font-bold text-red-500'>404</h1>
 			<p className='mt-4 text-xl'>Korraldasid mingi jama...</p>
 

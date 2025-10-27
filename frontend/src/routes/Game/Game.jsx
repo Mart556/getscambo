@@ -31,7 +31,7 @@ const Game = () => {
 	}, [currentImage, displayImage]);
 
 	return (
-		<div className='game-screen flex flex-col items-center justify-between h-full bg-white dark:bg-gray-800 backdrop-filter backdrop-blur-lg rounded-lg shadow-lg p-4 my-4'>
+		<div className='game-screen flex flex-col items-center justify-between h-full  dark:bg-gray-800 backdrop-filter backdrop-blur-lg rounded-lg shadow-lg p-4 my-4'>
 			<div className='flex grow justify-center items-center w-full overflow-hidden'>
 				<Zoom>
 					<img

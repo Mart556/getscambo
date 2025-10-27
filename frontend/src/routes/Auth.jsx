@@ -124,8 +124,8 @@ const Auth = () => {
 	};
 
 	return (
-		<div className='flex flex-col items-center justify-center min-h-screen bg-white dark:bg-gray-900 px-4 py-8'>
-			<div className='bg-white dark:bg-gray-800 backdrop-filter backdrop-blur-lg p-6 md:p-8 rounded-lg shadow-2xl w-full max-w-md border border-gray-200 dark:border-gray-700'>
+		<div className='flex flex-col items-center justify-center min-h-screen  dark:bg-gray-900 px-4 py-8'>
+			<div className=' dark:bg-gray-800 backdrop-filter backdrop-blur-lg p-6 md:p-8 rounded-lg shadow-2xl w-full max-w-md border border-gray-200 dark:border-gray-700'>
 				{/* Header with Close Button */}
 				<div className='flex flex-row justify-between items-center mb-6'>
 					<h1 className='text-2xl md:text-3xl font-bold text-black dark:text-white'>
@@ -169,7 +169,7 @@ const Auth = () => {
 							Kasutajanimi
 						</label>
 						<input
-							className='w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all'
+							className='w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500  dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all'
 							type='text'
 							id='username'
 							placeholder='Sisesta oma kasutajanimi'
@@ -189,7 +189,7 @@ const Auth = () => {
 						</label>
 						<div className='relative'>
 							<input
-								className='w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all pr-10'
+								className='w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500  dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all pr-10'
 								type={showPassword ? "text" : "password"}
 								id='password'
 								placeholder='Sisesta oma parool'
@@ -222,7 +222,7 @@ const Auth = () => {
 							</label>
 							<div className='relative'>
 								<input
-									className='w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all pr-10'
+									className='w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500  dark:bg-gray-700 text-black dark:text-white placeholder-gray-500 dark:placeholder-gray-400 transition-all pr-10'
 									type={showConfirmPassword ? "text" : "password"}
 									id='confirmPassword'
 									placeholder='Kinnita oma parool'

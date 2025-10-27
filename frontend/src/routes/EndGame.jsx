@@ -25,7 +25,7 @@ const EndGame = () => {
 	}, [preloadedMeme]);
 
 	return (
-		<div className='flex flex-col items-center justify-around h-full min-h-screen bg-white dark:bg-gray-800 backdrop-filter backdrop-blur-lg rounded-lg shadow-lg p-4 my-4'>
+		<div className='flex flex-col items-center justify-around h-full min-h-screen  dark:bg-gray-800 backdrop-filter backdrop-blur-lg rounded-lg shadow-lg p-4 my-4'>
 			<div className='flex flex-col justify-center items-center w-full'>
 				<h1 className='text-4xl sm:text-5xl md:text-6xl font-bold bg-linear-to-r from-red-400 to-violet-300 text-transparent bg-clip-text'>
 					{endReasonText}

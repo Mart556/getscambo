@@ -3,9 +3,19 @@ import { createContext, useContext, useState, useEffect } from "react";
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-  const [isDark, setIsDark] = useState(() => {
+	const [isDark, setIsDark] = useState(() => {
 		if (typeof window !== "undefined") {
-			return localStorage.getItem("theme") === "dark";
+			const savedTheme = localStorage.getItem("theme");
+			if (savedTheme) {
+				return savedTheme === "dark";
+			}
+
+			if (
+				window.matchMedia &&
+				window.matchMedia("(prefers-color-scheme: dark)").matches
+			) {
+				return true;
+			}
 		}
 		return false;
 	});
@@ -22,6 +32,23 @@ export function ThemeProvider({ children }) {
 		}
 	}, [isDark]);
 
+	useEffect(() => {
+		if (typeof window === "undefined") return;
+
+		const mediaQuery = window.matchMedia("(prefers-color-scheme: dark)");
+
+		const handleChange = (e) => {
+			if (!localStorage.getItem("theme")) {
+				setIsDark(e.matches);
+			}
+		};
+
+		if (mediaQuery.addEventListener) {
+			mediaQuery.addEventListener("change", handleChange);
+			return () => mediaQuery.removeEventListener("change", handleChange);
+		}
+	}, []);
+
 	const toggleTheme = () => {
 		setIsDark(!isDark);
 	};
@@ -34,5 +61,5 @@ export function ThemeProvider({ children }) {
 }
 
 export function useTheme() {
-  return useContext(ThemeContext);
+	return useContext(ThemeContext);
 }
