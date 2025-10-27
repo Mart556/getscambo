@@ -1,0 +1,20 @@
+{
+	"easy": {
+		"label": "Lihtne",
+		"time": 120,
+		"icon": "😊",
+		"color": "bg-green-500"
+	},
+	"medium": {
+		"label": "Keskmine",
+		"time": 60,
+		"icon": "⚡",
+		"color": "bg-green-500"
+	},
+	"hard": {
+		"label": "Raske",
+		"time": 30,
+		"icon": "🔥",
+		"color": "bg-green-500"
+	}
+}

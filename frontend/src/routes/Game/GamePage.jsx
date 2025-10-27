@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, Activity } from "react";
-import { useGame } from "../context/GameContext.jsx";
+import { useGame } from "../../context/GameContext.jsx";
 
-import Game from "./Game";
+import Game from "./Game.jsx";
 
 import { FaStopwatch } from "react-icons/fa6";
 
@@ -19,7 +19,6 @@ const GamePage = () => {
 		gameTime,
 		finishGame,
 		gameDifficulty,
-		isImageLoading,
 	} = useGame();
 
 	const [timeLeft, setTime] = useState(gameTime);
@@ -41,15 +40,10 @@ const GamePage = () => {
 			});
 		};
 
-		// Only start timer if image is loaded
-		if (!isImageLoading) {
-			intervalRef.current = setInterval(updateTime, 1000);
-		} else {
-			clearInterval(intervalRef.current);
-		}
+		intervalRef.current = setInterval(updateTime, 1000);
 
 		return () => clearInterval(intervalRef.current);
-	}, [isImageLoading]);
+	}, []);
 
 	const bounce = false;
 

@@ -13,78 +13,16 @@ const EndReasons = {
 const EndGame = () => {
 	const [searchParams] = useSearchParams();
 	const endReasonText = EndReasons[searchParams.get("reason")] || "Mäng läbi!";
-	const { startGame } = useGame();
+	const { startGame, preloadedMeme } = useGame();
 	const navigate = useNavigate();
 
-	const isNewHighScore = false;
-	const completionTime = 0;
-
-	const [meme, setMeme] = useState({
-		url: null,
-		name: "",
-	});
-
-	const fetchRandomMeme = async () => {
-		try {
-			const response = await fetch("https://api.imgflip.com/get_memes");
-			const { success, data } = await response.json();
-			if (success && data.memes.length > 0) {
-				const randomMeme =
-					data.memes[Math.floor(Math.random() * data.memes.length)];
-				return randomMeme;
-			}
-		} catch (error) {
-			console.error("Error fetching meme:", error);
-		}
-
-		return null;
-	};
+	const [meme, setMeme] = useState(preloadedMeme || { url: null, name: "" });
 
 	useEffect(() => {
-		const loadMeme = async () => {
-			const randomMeme = await fetchRandomMeme();
-			if (randomMeme) {
-				const img = new Image();
-				img.src = randomMeme.url;
-				img.onload = () =>
-					setMeme({ url: randomMeme.url, name: randomMeme.name });
-			}
-		};
-
-		loadMeme();
-
-		const saveResult = () => {
-			/* 	const difficulty = localStorage.getItem("difficulty") || "medium";
-			fetch("/api/submit-score", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify({
-					username: localStorage.getItem("username"),
-					score: localStorage.getItem("highestPoints"),
-					difficulty: difficulty,
-					completion_time: completionTime,
-				}),
-			})
-				.then((response) => response.json())
-				.then((data) => {
-					console.log("Result saved:", data);
-
-					localStorage.setItem(
-						"lastHighScore",
-						localStorage.getItem("highestPoints") || 0
-					);
-
-					alert("Uus rekord on salvestatud!");
-				})
-				.catch((error) => {
-					console.error("Error saving result:", error);
-				}); */
-		};
-
-		if (isNewHighScore) saveResult();
-	}, [isNewHighScore, completionTime]);
+		if (preloadedMeme) {
+			setMeme(preloadedMeme);
+		}
+	}, [preloadedMeme]);
 
 	return (
 		<div className='flex flex-col items-center justify-around h-full min-h-screen bg-white dark:bg-gray-800 backdrop-filter backdrop-blur-lg rounded-lg shadow-lg p-4 my-4'>
@@ -95,11 +33,22 @@ const EndGame = () => {
 			</div>
 
 			<div className='flex flex-col justify-center items-center w-full'>
-				<img
-					src={meme.url}
-					alt={meme.name}
-					className='rounded-lg shadow-lg w-full h-auto max-w-xs max-h-[360px] my-4'
-				/>
+				{meme.url ? (
+					<img
+						src={meme.url}
+						alt={meme.name}
+						className='rounded-lg shadow-lg w-full h-auto max-w-xs max-h-[360px] my-4 animate-fadeIn'
+					/>
+				) : (
+					<div className='rounded-lg shadow-lg w-full h-[360px] max-w-xs my-4 flex items-center justify-center bg-gray-200 dark:bg-gray-700'>
+						<div className='flex flex-col items-center gap-3'>
+							<div className='w-12 h-12 border-4 border-gray-300 dark:border-gray-600 border-t-blue-500 rounded-full animate-spin'></div>
+							<p className='text-gray-600 dark:text-gray-400'>
+								Laadin meemi...
+							</p>
+						</div>
+					</div>
+				)}
 			</div>
 
 			<div className='flex flex-col sm:flex-row justify-center items-center w-full sm:w-1/2'>

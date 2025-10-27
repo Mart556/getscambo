@@ -1,4 +1,4 @@
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../../context/ThemeContext";
 import { AiFillSun, AiFillMoon } from "react-icons/ai";
 
 const LightSwitch = () => {

@@ -1,7 +1,7 @@
 import { Routes, Route, Navigate } from "react-router";
 
-import Home from "./routes/Home";
-import GamePage from "./routes/GamePage";
+import Home from "./routes/Home/Home";
+import GamePage from "./routes/Game/GamePage";
 import ErrorPage from "./routes/ErrorPage";
 import Info from "./routes/Info";
 import Auth from "./routes/Auth";

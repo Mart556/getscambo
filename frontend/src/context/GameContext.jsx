@@ -3,11 +3,7 @@ import { useNavigate } from "react-router";
 
 const GameContext = createContext();
 
-const DIFFICULTY_LEVELS = {
-	easy: 120000,
-	medium: 60000,
-	hard: 30000,
-};
+import DIFFICULTY_LEVELS from "../assets/difficulties.json";
 
 export function GameProvider({ children }) {
 	const navigate = useNavigate();
@@ -19,6 +15,8 @@ export function GameProvider({ children }) {
 	const [highestPoints, setHighestPoints] = useState(0);
 	const [currentPoints, setCurrentPoints] = useState(0);
 	const [startTime, setStartTime] = useState(null);
+	const [preloadedMeme, setPreloadedMeme] = useState(null);
+	const [isImageLoading, setIsImageLoading] = useState(false);
 
 	const chooseRandomImage = () => {
 		const context = import.meta.glob("../../public/*.{webp,png,jpg,jpeg,svg}");
@@ -34,13 +32,39 @@ export function GameProvider({ children }) {
 		return null;
 	};
 
+	const fetchRandomMeme = async () => {
+		try {
+			const response = await fetch("https://api.imgflip.com/get_memes");
+			const { success, data } = await response.json();
+			if (success && data.memes.length > 0) {
+				const randomMeme =
+					data.memes[Math.floor(Math.random() * data.memes.length)];
+				return new Promise((resolve) => {
+					const img = new Image();
+					img.src = randomMeme.url;
+					img.onload = () => {
+						resolve({ url: randomMeme.url, name: randomMeme.name });
+					};
+					img.onerror = () => {
+						resolve({ url: randomMeme.url, name: randomMeme.name });
+					};
+				});
+			}
+		} catch (error) {
+			console.error("Error fetching meme:", error);
+		}
+
+		return null;
+	};
+
 	const startGame = (difficulty) => {
-		const gameTime = DIFFICULTY_LEVELS[difficulty];
-		if (!gameTime) return;
+		const difficultyLevel = DIFFICULTY_LEVELS[difficulty];
+		if (!difficultyLevel)
+			return console.error("Invalid difficulty level:", difficulty);
 
 		setStartTime(Date.now());
 		setGameDifficulty(difficulty);
-		setGameTime(gameTime);
+		setGameTime(difficultyLevel.time * 1000);
 		setCurrentPoints(0);
 		setCurrentImage(chooseRandomImage());
 		setGameActive(true);
@@ -48,7 +72,7 @@ export function GameProvider({ children }) {
 		navigate("/start");
 	};
 
-	const finishGame = (badAnswer) => {
+	const finishGame = async (badAnswer) => {
 		setGameActive(false);
 
 		const newHighscore = currentPoints > localStorage.getItem("highestPoints");
@@ -85,6 +109,9 @@ export function GameProvider({ children }) {
 					console.error("Error submitting score:", error);
 				});
 		}
+
+		const meme = await fetchRandomMeme();
+		setPreloadedMeme(meme);
 
 		if (badAnswer) {
 			navigate("/end?reason=answer&points=" + currentPoints);
@@ -141,6 +168,10 @@ export function GameProvider({ children }) {
 				startGame,
 				finishGame,
 				answerQuestion,
+				preloadedMeme,
+				setPreloadedMeme,
+				isImageLoading,
+				setIsImageLoading,
 			}}
 		>
 			{children}
