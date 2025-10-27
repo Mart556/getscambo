@@ -18,6 +18,11 @@ router.post("/validate-answer", async (req, res) => {
 		return res.status(401).json({ error: "Unauthorized" });
 	}
 
+	const gameSession = req.session.game;
+	if (!gameSession) {
+		return res.status(400).json({ error: "No active game session" });
+	}
+
 	try {
 		const { answer, image } = req.body;
 
@@ -37,6 +42,14 @@ router.post("/validate-answer", async (req, res) => {
 				".webp";
 		}
 
+		gameSession.score += isCorrect ? 1 : 0;
+
+		console.log(
+			`User ${req.user.username} answered ${
+				isCorrect ? "correctly" : "incorrectly"
+			}. New score: ${gameSession.score}`
+		);
+
 		res.json({
 			isCorrect,
 			nextImage,
@@ -50,7 +63,17 @@ router.post("/validate-answer", async (req, res) => {
 router.get("/get-highscores", async (req, res) => {
 	try {
 		const [results] = await pool.query(
-			"SELECT username, score, difficulty, completion_time FROM `leaderboard` ORDER BY score DESC LIMIT 10"
+			`SELECT username, score, difficulty, completion_time FROM \`leaderboard\` 
+			ORDER BY 
+				score DESC,
+				CASE 
+					WHEN difficulty = 'hard' THEN 3
+					WHEN difficulty = 'medium' THEN 2
+					WHEN difficulty = 'easy' THEN 1
+					ELSE 0
+				END DESC,
+				completion_time ASC
+			LIMIT 10`
 		);
 		res.json(results);
 	} catch (error) {
@@ -59,29 +82,6 @@ router.get("/get-highscores", async (req, res) => {
 	}
 });
 
-router.post("/submit-score", async (req, res) => {
-	if (!req.isAuthenticated()) {
-		return res.status(401).json({ error: "Unauthorized" });
-	}
-
-	try {
-		const { score, difficulty, completion_time } = req.body;
-		await pool.query(
-			"INSERT INTO `leaderboard` (username, score, difficulty, completion_time) VALUES (?, ?, ?, ?)",
-			[
-				req.user.username,
-				score,
-				difficulty || "medium",
-				completion_time || null,
-			]
-		);
-
-		res.sendStatus(201);
-	} catch (error) {
-		console.error("Error submitting score:", error);
-		res.status(500).json({ error: "Database error" });
-	}
-});
 
 
 export default router;

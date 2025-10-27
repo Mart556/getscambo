@@ -14,7 +14,9 @@ import Leaderboard from "./Leaderboard.jsx";
 import DIFFICULTY_LEVELS from "../../assets/difficulties.json";
 
 const Home = () => {
-	const [selectedDifficulty, setSelectedDifficulty] = useState("medium");
+	const [selectedDifficulty, setSelectedDifficulty] = useState(
+		localStorage.getItem("difficulty") || "medium"
+	);
 	const [showLeaderboard, setShowLeaderboard] = useState(false);
 
 	const navigate = useNavigate();
@@ -51,7 +53,10 @@ const Home = () => {
 											{Object.entries(DIFFICULTY_LEVELS).map(([key, value]) => (
 												<button
 													key={key}
-													onClick={() => setSelectedDifficulty(key)}
+													onClick={() => {
+														setSelectedDifficulty(key);
+														localStorage.setItem("difficulty", key);
+													}}
 													className={`p-4 rounded-lg font-semibold transition-all transform text-center ${
 														selectedDifficulty === key
 															? `${value.color} text-white scale-105 shadow-lg ring-2 ring-offset-2 ring-offset-white dark:ring-offset-gray-800 ring-${value.color}`

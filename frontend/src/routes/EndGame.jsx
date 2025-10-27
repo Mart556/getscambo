@@ -43,9 +43,7 @@ const EndGame = () => {
 					<div className='rounded-lg shadow-lg w-full h-[360px] max-w-xs my-4 flex items-center justify-center bg-gray-200 dark:bg-gray-700'>
 						<div className='flex flex-col items-center gap-3'>
 							<div className='w-12 h-12 border-4 border-gray-300 dark:border-gray-600 border-t-blue-500 rounded-full animate-spin'></div>
-							<p className='text-gray-600 dark:text-gray-400'>
-								Laadin meemi...
-							</p>
+							<p className='text-gray-600 dark:text-gray-400'>Laeb meemi...</p>
 						</div>
 					</div>
 				)}
@@ -55,7 +53,9 @@ const EndGame = () => {
 				<button
 					type='button'
 					className='bg-blue-500 hover:bg-blue-600 text-white font-bold py-5 w-75 rounded m-3 text-2xl cursor-pointer transition-colors'
-					onClick={() => startGame("medium")}
+					onClick={() =>
+						startGame(localStorage.getItem("difficulty") || "medium")
+					}
 				>
 					<span className='flex items-center justify-center text-2xl md:text-3xl'>
 						<FaRepeat className='me-2' /> Uuesti

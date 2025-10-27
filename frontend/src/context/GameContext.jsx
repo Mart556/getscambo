@@ -57,10 +57,19 @@ export function GameProvider({ children }) {
 		return null;
 	};
 
-	const startGame = (difficulty) => {
+	const startGame = async (difficulty) => {
 		const difficultyLevel = DIFFICULTY_LEVELS[difficulty];
 		if (!difficultyLevel)
 			return console.error("Invalid difficulty level:", difficulty);
+
+		await fetch("/api/game/start-game", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			credentials: "include",
+			body: JSON.stringify({ difficulty }),
+		});
 
 		setStartTime(Date.now());
 		setGameDifficulty(difficulty);
@@ -80,17 +89,12 @@ export function GameProvider({ children }) {
 			setHighestPoints(currentPoints);
 			localStorage.setItem("highestPoints", currentPoints);
 
-			fetch("/api/submit-score", {
+			fetch("/api/game/end-game", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
 				credentials: "include",
-				body: JSON.stringify({
-					score: currentPoints,
-					difficulty: gameDifficulty,
-					completion_time: startTime ? (Date.now() - startTime) / 1000 : null,
-				}),
 			})
 				.then((response) => response.json())
 				.then((data) => {

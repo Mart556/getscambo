@@ -47,6 +47,9 @@ app.use("/api", answerRouter);
 import authRouter from "./api/auth.js";
 app.use("/api/auth", authRouter);
 
+import gameRouter from "./api/game.js";
+app.use("/api/game", gameRouter);
+
 app.use(express.static("frontend/dist"));
 
 const PORT = process.env.PORT || 3000;
