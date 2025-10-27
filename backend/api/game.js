@@ -109,4 +109,30 @@ router.post("/end-game", async (req, res) => {
 	}
 });
 
+router.get("/highest-score", async (req, res) => {
+	if (!req.isAuthenticated()) {
+		return res.status(401).json({ error: "Unauthorized" });
+	}
+
+	const { difficulty } = req.session.game;
+
+	if (!difficulty) {
+		return res
+			.status(400)
+			.json({ error: "No game difficulty found in session" });
+	}
+
+	try {
+		const [results] = await pool.query(
+			"SELECT MAX(score) as highestScore FROM `leaderboard` WHERE username = ? AND difficulty = ?",
+			[req.user.username, difficulty]
+		);
+		const highestScore = results[0]?.highestScore || 0;
+		res.status(200).json({ highestScore });
+	} catch (error) {
+		console.error("Error fetching highest score:", error);
+		res.status(500).json({ error: "Database error" });
+	}
+});
+
 export default router;

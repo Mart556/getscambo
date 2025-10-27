@@ -12,16 +12,12 @@ const DifficultyLabels = {
 };
 
 const GamePage = () => {
-	const {
-		currentPoints,
-
-		isGameActive,
-		gameTime,
-		finishGame,
-		gameDifficulty,
-	} = useGame();
+	const { currentPoints, isGameActive, gameTime, finishGame, gameDifficulty } =
+		useGame();
 
 	const [timeLeft, setTime] = useState(gameTime);
+	const [highestPoints, setHighestPoints] = useState(0);
+
 	const intervalRef = useRef(null);
 
 	const gameDifficultyLabel =
@@ -40,13 +36,27 @@ const GamePage = () => {
 			});
 		};
 
+		fetch("/api/game/highest-score", {
+			method: "GET",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			credentials: "include",
+		})
+			.then((response) => response.json())
+			.then((data) => {
+				if (typeof data.highestScore === "number") {
+					setHighestPoints(data.highestScore);
+				}
+			})
+			.catch((error) => {
+				console.error("Error fetching highest score:", error);
+			});
+
 		intervalRef.current = setInterval(updateTime, 1000);
 
 		return () => clearInterval(intervalRef.current);
 	}, []);
-
-	const bounce = false;
-	const highestPoints = 0; //TODO fetch highest points from backend?
 
 	return (
 		<div className='container mx-auto px-4 md:px-8 h-screen flex flex-col max-h-screen  dark:bg-gray-900 text-black dark:text-white'>
@@ -58,6 +68,15 @@ const GamePage = () => {
 						</p>
 						<p className='text-2xl font-bold text-blue-600 dark:text-blue-400'>
 							{currentPoints}
+						</p>
+					</div>
+
+					<div className=' dark:bg-gray-800 p-3 rounded-lg shadow-md border border-gray-200 dark:border-gray-700'>
+						<p className='text-xs text-gray-600 dark:text-gray-400 font-semibold uppercase'>
+							Rekord
+						</p>
+						<p className='text-2xl font-bold text-purple-600 dark:text-purple-400'>
+							{highestPoints}
 						</p>
 					</div>
 				</div>
@@ -104,9 +123,7 @@ const GamePage = () => {
 							Punkte
 						</p>
 						<p className='text-3xl font-bold text-blue-600 dark:text-blue-400'>
-							<span className={`${bounce ? "bounce" : ""} inline-block`}>
-								{currentPoints}
-							</span>
+							<span className='inline-block'>{currentPoints}</span>
 						</p>
 					</div>
 
