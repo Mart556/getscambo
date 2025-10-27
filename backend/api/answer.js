@@ -8,7 +8,6 @@ let IMAGES = [];
 	try {
 		const [results] = await pool.query("SELECT * FROM `images`;");
 		IMAGES = results;
-		console.log(`Loaded ${IMAGES.length} images from database`);
 	} catch (error) {
 		console.error("Error fetching images:", error);
 	}
@@ -29,11 +28,6 @@ router.post("/validate-answer", async (req, res) => {
 		}
 
 		const isCorrect = foundImage.answer == answer;
-
-		console.log(
-			`Client answered: ${answer}; Correct answer: ${foundImage.answer}`,
-			isCorrect
-		);
 
 		let nextImage = null;
 		if (isCorrect) {
@@ -58,7 +52,6 @@ router.get("/get-highscores", async (req, res) => {
 		const [results] = await pool.query(
 			"SELECT username, score, difficulty, completion_time FROM `leaderboard` ORDER BY score DESC LIMIT 10"
 		);
-		console.log("Fetched highscores:", results);
 		res.json(results);
 	} catch (error) {
 		console.error("Error fetching highscores:", error);
@@ -67,19 +60,12 @@ router.get("/get-highscores", async (req, res) => {
 });
 
 router.post("/submit-score", async (req, res) => {
-	console.log("Submit score request received");
-	console.log("Is authenticated:", req.isAuthenticated());
-
 	if (!req.isAuthenticated()) {
-		console.log("User not authenticated - returning 401");
 		return res.status(401).json({ error: "Unauthorized" });
 	}
 
 	try {
 		const { score, difficulty, completion_time } = req.body;
-		console.log(
-			`Submitting score for user ${req.user.username}: ${score} (Difficulty: ${difficulty}, Time: ${completion_time})`
-		);
 		await pool.query(
 			"INSERT INTO `leaderboard` (username, score, difficulty, completion_time) VALUES (?, ?, ?, ?)",
 			[

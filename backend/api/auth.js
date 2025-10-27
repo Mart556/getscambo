@@ -11,7 +11,6 @@ passport.serializeUser((user, cb) => {
 });
 
 passport.deserializeUser(async (id, cb) => {
-	console.log("Deserializing user with ID:", id);
 	try {
 		const [results] = await pool.query(
 			"SELECT id, username FROM users WHERE id = ?",
