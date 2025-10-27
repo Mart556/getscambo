@@ -80,12 +80,6 @@ export function GameProvider({ children }) {
 			setHighestPoints(currentPoints);
 			localStorage.setItem("highestPoints", currentPoints);
 
-			console.log("Submitting score:", {
-				score: currentPoints,
-				difficulty: gameDifficulty,
-				completion_time: startTime ? (Date.now() - startTime) / 1000 : null,
-			});
-
 			fetch("/api/submit-score", {
 				method: "POST",
 				headers: {
@@ -101,7 +95,6 @@ export function GameProvider({ children }) {
 				.then((response) => response.json())
 				.then((data) => {
 					if (response.ok) {
-						console.log("Result saved:", data);
 						alert("Uus rekord! Sinu tulemus on salvestatud edetabelisse.");
 					}
 				})
@@ -121,7 +114,6 @@ export function GameProvider({ children }) {
 	};
 
 	const answerQuestion = (answer) => {
-		console.log("Submitting answer:", answer, "for image:", currentImage);
 		fetch("/api/validate-answer", {
 			method: "POST",
 			headers: {
@@ -134,14 +126,12 @@ export function GameProvider({ children }) {
 			}),
 		})
 			.then((response) => {
-				console.log("Response status:", response.status, response.statusText);
 				if (!response.ok) {
 					throw new Error(`HTTP error! status: ${response.status}`);
 				}
 				return response.json();
 			})
 			.then((data) => {
-				console.log("Answer validation response:", data);
 				if (data && data.isCorrect) {
 					setCurrentPoints(currentPoints + 1);
 					setCurrentImage(data.nextImage);

@@ -52,7 +52,7 @@ const Auth = () => {
 		setIsLoading(true);
 
 		try {
-			const response = await fetch("http://localhost:3000/api/auth/register", {
+			const response = await fetch("/api/auth/register", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -87,7 +87,7 @@ const Auth = () => {
 		setIsLoading(true);
 
 		try {
-			const response = await fetch("http://localhost:3000/api/auth/login", {
+			const response = await fetch("/api/auth/login", {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
@@ -97,19 +97,12 @@ const Auth = () => {
 			});
 
 			const data = await response.json();
-			console.log("Login response data:", data);
 			if (response.ok && data.message === "Login successful.") {
 				setSuccess(`Tere tulemast tagasi, ${data.user.username}!`);
 				localStorage.setItem("username", data.user.username);
 				setTimeout(() => {
 					setUser(data.user);
 					setIsLoggedIn(true);
-					console.log(
-						"User logged in:",
-						data.user.username,
-						data.user.id,
-						document.cookie
-					);
 					navigate("/");
 				}, 1000);
 			} else {
