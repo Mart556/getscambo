@@ -44,7 +44,6 @@ const Home = () => {
 										Alusta mängu
 									</h2>
 
-									{/* Difficulty Selector */}
 									<div className='mb-8'>
 										<label className='block text-sm font-semibold mb-4 text-gray-700 dark:text-gray-300'>
 											Vali raskusaste:

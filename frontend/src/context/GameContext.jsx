@@ -12,7 +12,6 @@ export function GameProvider({ children }) {
 	const [gameDifficulty, setGameDifficulty] = useState("");
 	const [gameTime, setGameTime] = useState(0);
 	const [currentImage, setCurrentImage] = useState("");
-	const [highestPoints, setHighestPoints] = useState(0);
 	const [currentPoints, setCurrentPoints] = useState(0);
 	const [startTime, setStartTime] = useState(null);
 	const [preloadedMeme, setPreloadedMeme] = useState(null);
@@ -84,28 +83,24 @@ export function GameProvider({ children }) {
 	const finishGame = async (badAnswer) => {
 		setGameActive(false);
 
-		const newHighscore = currentPoints > localStorage.getItem("highestPoints");
-		if (newHighscore) {
-			setHighestPoints(currentPoints);
-			localStorage.setItem("highestPoints", currentPoints);
-
-			fetch("/api/game/end-game", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				credentials: "include",
+		await fetch("/api/game/end-game", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			credentials: "include",
+		})
+			.then((response) => {
+				return response.json();
 			})
-				.then((response) => response.json())
-				.then((data) => {
-					if (response.ok) {
-						alert("Uus rekord! Sinu tulemus on salvestatud edetabelisse.");
-					}
-				})
-				.catch((error) => {
-					console.error("Error submitting score:", error);
-				});
-		}
+			.then((data) => {
+				if (data.didBeatPersonalBest) {
+					alert("Uus rekord! Sinu tulemus on salvestatud edetabelisse.");
+				}
+			})
+			.catch((error) => {
+				console.error("Error submitting score:", error);
+			});
 
 		const meme = await fetchRandomMeme();
 		setPreloadedMeme(meme);
@@ -158,7 +153,6 @@ export function GameProvider({ children }) {
 				gameDifficulty,
 				gameTime,
 				currentImage,
-				highestPoints,
 				startGame,
 				finishGame,
 				answerQuestion,

@@ -81,7 +81,13 @@ const Leaderboard = ({
 										</span>
 									</div>
 									<div className='col-span-5 min-w-0'>
-										<p className='font-semibold text-sm truncate'>
+										<p
+											className={`font-semibold text-sm truncate ${
+												user.username == user.username
+													? "text-blue-600 dark:text-amber-400"
+													: ""
+											}`}
+										>
 											{user.username}
 										</p>
 										<p className='text-xs text-gray-500 dark:text-gray-400'>
@@ -157,9 +163,16 @@ const Leaderboard = ({
 											{index + 1}
 										</span>
 										<div>
-											<p className='font-semibold text-sm md:text-base'>
+											<p
+												className={`font-semibold text-sm md:text-base ${
+													user.username == user.username
+														? "text-blue-600 dark:text-amber-400"
+														: ""
+												}`}
+											>
 												{user.username}
 											</p>
+
 											<p className='text-xs text-gray-500 dark:text-gray-400'>
 												{difficultyInfo.label}
 											</p>

@@ -14,7 +14,7 @@ const DifficultyLabels = {
 const GamePage = () => {
 	const {
 		currentPoints,
-		highestPoints,
+
 		isGameActive,
 		gameTime,
 		finishGame,
@@ -46,6 +46,7 @@ const GamePage = () => {
 	}, []);
 
 	const bounce = false;
+	const highestPoints = 0; //TODO fetch highest points from backend?
 
 	return (
 		<div className='container mx-auto px-4 md:px-8 h-screen flex flex-col max-h-screen  dark:bg-gray-900 text-black dark:text-white'>
@@ -57,14 +58,6 @@ const GamePage = () => {
 						</p>
 						<p className='text-2xl font-bold text-blue-600 dark:text-blue-400'>
 							{currentPoints}
-						</p>
-					</div>
-					<div className=' dark:bg-gray-800 p-3 rounded-lg shadow-md border border-gray-200 dark:border-gray-700'>
-						<p className='text-xs text-gray-600 dark:text-gray-400 font-semibold uppercase'>
-							Rekord
-						</p>
-						<p className='text-2xl font-bold text-purple-600 dark:text-purple-400'>
-							{highestPoints}
 						</p>
 					</div>
 				</div>

@@ -49,20 +49,64 @@ router.post("/end-game", async (req, res) => {
 	}
 
 	console.log(
-		`User ${req.user.username} finished game. Score: ${gameSession.score}, Time: ${completionTime}s`
+		`User ${req.user.username} finished game. Score: ${gameSession.score}, Time: ${completionTime}s, Difficulty: ${gameSession.difficulty}`
 	);
 
-	await pool.query(
-		"INSERT INTO `leaderboard` (username, score, difficulty, completion_time) VALUES (?, ?, ?, ?)",
-		[
-			req.user.username,
-			gameSession.score,
-			gameSession.difficulty,
-			Math.round(completionTime),
-		]
-	);
+	let didBeatPersonalBest = false;
 
-	res.status(200).json({ message: "Game ended" });
+	try {
+		const [allScores] = await pool.query(
+			"SELECT MAX(score) as highestScore FROM `leaderboard` WHERE username = ?",
+			[req.user.username]
+		);
+
+		const playerHighestScore = allScores[0]?.highestScore || 0;
+
+		if (gameSession.score > playerHighestScore) {
+			await pool.query(
+				"INSERT INTO `leaderboard` (username, score, difficulty, completion_time) VALUES (?, ?, ?, ?)",
+				[
+					req.user.username,
+					gameSession.score,
+					gameSession.difficulty,
+					Math.round(completionTime),
+				]
+			);
+			console.log(
+				`User ${req.user.username} achieved a new personal best! Score: ${gameSession.score}`
+			);
+		} else if (gameSession.score === playerHighestScore) {
+			const [existingRecords] = await pool.query(
+				"SELECT * FROM `leaderboard` WHERE username = ? AND score = ? ORDER BY completion_time ASC",
+				[req.user.username, gameSession.score]
+			);
+
+			if (existingRecords.length > 0) {
+				const bestTime = existingRecords[0].completion_time;
+				if (completionTime < bestTime) {
+					await pool.query(
+						"INSERT INTO `leaderboard` (username, score, difficulty, completion_time) VALUES (?, ?, ?, ?)",
+						[
+							req.user.username,
+							gameSession.score,
+							gameSession.difficulty,
+							Math.round(completionTime),
+						]
+					);
+					console.log(
+						`User ${req.user.username} improved their time! Score: ${
+							gameSession.score
+						}, New time: ${Math.round(completionTime)}s`
+					);
+				}
+			}
+		}
+
+		res.status(200).json({ didBeatPersonalBest });
+	} catch (error) {
+		console.error("Error processing end-game:", error);
+		res.status(500).json({ error: "Database error" });
+	}
 });
 
 export default router;
